@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>475746859979-ao7j7lr083pfefsconho2m7fuhn79916.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.475746859979-ao7j7lr083pfefsconho2m7fuhn79916</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCLeNIdpJIqGYW6UZMDOEpQ10YOZ6NQvGA</string>
+	<key>GCM_SENDER_ID</key>
+	<string>475746859979</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.bigbucks</string>
+	<key>PROJECT_ID</key>
+	<string>big-moni</string>
+	<key>STORAGE_BUCKET</key>
+	<string>big-moni.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:475746859979:ios:864636cdaee57931db544e</string>
+</dict>
+</plist>

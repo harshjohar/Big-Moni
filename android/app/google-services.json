@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "475746859979",
+    "project_id": "big-moni",
+    "storage_bucket": "big-moni.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:475746859979:android:1ec2e1405b2eb882db544e",
+        "android_client_info": {
+          "package_name": "com.example.bigbucks"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "475746859979-0smij206brtjq7r7ijq7nc4mkdp9e7kk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_FS_SZkro0_yK9sGwsxz0zjRyNlY1FdI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "475746859979-0smij206brtjq7r7ijq7nc4mkdp9e7kk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
