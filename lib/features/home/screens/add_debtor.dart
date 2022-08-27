@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AddScreen extends StatefulWidget {
@@ -8,11 +9,99 @@ class AddScreen extends StatefulWidget {
 }
 
 class _AddScreenState extends State<AddScreen> {
+  final _formKey = GlobalKey<FormState>();
+
+  final _priceFocusNode = FocusNode();
+  final _descriptionFocusNode = FocusNode();
+  final _phoneNumberFocusNode = FocusNode();
+
+  @override
+  void dispose() {
+    _priceFocusNode.dispose();
+    _descriptionFocusNode.dispose();
+    _phoneNumberFocusNode.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add Debt"),
+        title: const Text("Add Debt"),
+      ),
+      body: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              children: [
+                TextFormField(
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please select a contact';
+                    }
+                    return null;
+                  },
+                  decoration: const InputDecoration(
+                    labelText: "Phone Number",
+                  ),
+                  keyboardType: TextInputType.phone,
+                  textInputAction: TextInputAction.next,
+                  onFieldSubmitted: (_) {
+                    FocusScope.of(context).requestFocus(_priceFocusNode);
+                  },
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Price',
+                  ),
+                  validator: (value) {
+                    if (value == null ||
+                        value.isEmpty ||
+                        int.parse(value) <= 0) {
+                      return 'Please input a valid price';
+                    }
+                    return null;
+                  },
+                  textInputAction: TextInputAction.next,
+                  focusNode: _priceFocusNode,
+                  keyboardType:
+                      const TextInputType.numberWithOptions(decimal: true),
+                  onFieldSubmitted: (_) {
+                    FocusScope.of(context).requestFocus(_descriptionFocusNode);
+                  },
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Description',
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Description is required';
+                    }
+                    return null;
+                  },
+                  maxLines: 3,
+                  keyboardType: TextInputType.multiline,
+                  onFieldSubmitted: (_) {
+                    FocusScope.of(context).requestFocus(_priceFocusNode);
+                  },
+                ),
+                CupertinoButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Processing Data')),
+                      );
+                    }
+                  },
+                  child: const Text('Submit'),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
