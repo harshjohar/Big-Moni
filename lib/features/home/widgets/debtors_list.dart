@@ -15,6 +15,7 @@ class DebtorsList extends StatelessWidget {
   final gwen = Person(
     name: "Emma Stone",
     phoneNumber: "4762384234",
+    upiID: "emmastone@okhdfcbank",
     photoUrl:
         "https://media.vanityfair.com/photos/55a674affff2c16856a6bd85/1:1/w_957,h_638,c_limit/emma-stone-aloha-miscast.jpg",
   );

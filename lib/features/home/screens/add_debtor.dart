@@ -1,3 +1,4 @@
+import 'package:bigbucks/features/home/screens/contacts_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -36,21 +37,39 @@ class _AddScreenState extends State<AddScreen> {
             padding: const EdgeInsets.all(20.0),
             child: Column(
               children: [
-                TextFormField(
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please select a contact';
-                    }
-                    return null;
-                  },
-                  decoration: const InputDecoration(
-                    labelText: "Phone Number",
-                  ),
-                  keyboardType: TextInputType.phone,
-                  textInputAction: TextInputAction.next,
-                  onFieldSubmitted: (_) {
-                    FocusScope.of(context).requestFocus(_priceFocusNode);
-                  },
+                Row(
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.75,
+                      child: TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please select a contact';
+                          }
+                          return null;
+                        },
+                        decoration: const InputDecoration(
+                          labelText: "Phone Number",
+                        ),
+                        keyboardType: TextInputType.phone,
+                        textInputAction: TextInputAction.next,
+                        onFieldSubmitted: (_) {
+                          FocusScope.of(context).requestFocus(_priceFocusNode);
+                        },
+                        focusNode: _phoneNumberFocusNode,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushNamed(ContactScreen.routeName);
+                      },
+                      icon: const Icon(
+                        Icons.contacts,
+                        color: Colors.indigo,
+                      ),
+                    ),
+                  ],
                 ),
                 TextFormField(
                   decoration: const InputDecoration(
@@ -87,6 +106,7 @@ class _AddScreenState extends State<AddScreen> {
                   onFieldSubmitted: (_) {
                     FocusScope.of(context).requestFocus(_priceFocusNode);
                   },
+                  focusNode: _descriptionFocusNode,
                 ),
                 CupertinoButton(
                   onPressed: () {

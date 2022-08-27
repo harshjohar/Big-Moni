@@ -39,7 +39,8 @@ dependencies:
   firebase_auth: ^3.7.0
   cloud_firestore: ^3.4.6
   firebase_storage: ^10.3.7
-
+  contacts_service: ^0.6.3
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
