@@ -29,6 +29,13 @@
             {
               "client_id": "475746859979-0smij206brtjq7r7ijq7nc4mkdp9e7kk.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "475746859979-ao7j7lr083pfefsconho2m7fuhn79916.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.bigbucks"
+              }
             }
           ]
         }

@@ -1,17 +1,16 @@
+import 'package:bigbucks/models/person.dart';
 import 'package:flutter/material.dart';
 
 enum Type { debit, credit }
 
 class ListPerson extends StatelessWidget {
-  final String name;
+  final Person user;
   final double money;
-  final String? photoUrl;
   final Type type;
   const ListPerson({
     Key? key,
-    required this.name,
+    required this.user,
     required this.money,
-    this.photoUrl,
     required this.type,
   }) : super(key: key);
 
@@ -28,9 +27,9 @@ class ListPerson extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(9999),
-            child: photoUrl != null
+            child: user.photoUrl != null
                 ? Image.network(
-                    photoUrl!,
+                    user.photoUrl!,
                     height: 60,
                     width: 60,
                     fit: BoxFit.cover,
@@ -47,7 +46,7 @@ class ListPerson extends StatelessWidget {
           ),
           Expanded(
               child: Text(
-            name,
+            user.name,
             style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
           )),
           Text(
