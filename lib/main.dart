@@ -1,3 +1,4 @@
+import 'package:bigbucks/features/auth/screens/user_information.dart';
 import 'package:bigbucks/features/home/screens/home_screen.dart';
 import 'package:bigbucks/features/landing/landing_screen.dart';
 import 'package:bigbucks/firebase_options.dart';
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.indigo)
               .copyWith(secondary: Colors.amber)),
-      home: const HomeScreen(),
+      home: const LandingScreen(),
       onGenerateRoute: (settings) => generateRoute(settings),
     );
   }

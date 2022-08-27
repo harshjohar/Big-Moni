@@ -1,5 +1,6 @@
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class ContactScreen extends StatefulWidget {
   const ContactScreen({Key? key}) : super(key: key);
@@ -38,12 +39,27 @@ class _ContactScreenState extends State<ContactScreen> {
     });
   }
 
+  _contactsPermissions() async {
+    PermissionStatus permission = await Permission.contacts.status;
+    if (permission != PermissionStatus.granted &&
+        permission != PermissionStatus.denied) {
+      Map<Permission, PermissionStatus> permissionStatus =
+          await [Permission.contacts].request();
+      return permissionStatus[Permission.contacts] ?? PermissionStatus.granted;
+    } else {
+      return permission;
+    }
+  }
+
   getAllContacts() async {
-    List<Contact> _contacts =
-        (await ContactsService.getContacts(withThumbnails: false)).toList();
-    setState(() {
-      contacts = _contacts;
-    });
+    PermissionStatus contactsPermissionsStatus = await _contactsPermissions();
+    if (contactsPermissionsStatus == PermissionStatus.granted) {
+      List<Contact> _contacts =
+          (await ContactsService.getContacts(withThumbnails: false)).toList();
+      setState(() {
+        contacts = _contacts;
+      });
+    }
   }
 
   @override

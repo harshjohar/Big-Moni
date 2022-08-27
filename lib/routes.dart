@@ -1,5 +1,7 @@
 import 'package:bigbucks/common/error_screen.dart';
 import 'package:bigbucks/features/auth/screens/login_screen.dart';
+import 'package:bigbucks/features/auth/screens/otp_screen.dart';
+import 'package:bigbucks/features/auth/screens/user_information.dart';
 import 'package:bigbucks/features/home/screens/add_debtor.dart';
 import 'package:bigbucks/features/home/screens/contacts_screen.dart';
 import 'package:bigbucks/features/home/screens/notifications_screen.dart';
@@ -25,6 +27,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       });
     case (ContactScreen.routeName):
       return MaterialPageRoute(builder: (ctx) => const ContactScreen());
+    case (OTPScreen.routeName):
+      return MaterialPageRoute(builder: (ctx) => const OTPScreen());
+    case (UserInformation.routeName):
+      return MaterialPageRoute(builder: (ctx) => const UserInformation());
     default:
       return MaterialPageRoute(
         builder: (context) => const Scaffold(
