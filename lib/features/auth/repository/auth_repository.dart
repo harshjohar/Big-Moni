@@ -1,6 +1,11 @@
+import 'dart:io';
+
+import 'package:bigbucks/common/repository/common_firebase_storage_repository.dart';
 import 'package:bigbucks/common/utils/utils.dart';
 import 'package:bigbucks/features/auth/screens/otp_screen.dart';
 import 'package:bigbucks/features/auth/screens/user_information.dart';
+import 'package:bigbucks/features/home/screens/home_screen.dart';
+import 'package:bigbucks/models/person.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +24,16 @@ class AuthRepository {
     required this.auth,
     required this.firestore,
   });
+
+  Future<Person?> getCurrentUserData() async {
+    var personData =
+        await firestore.collection("users").doc(auth.currentUser?.uid).get();
+    Person? person;
+    if (personData.data() != null) {
+      person = Person.fromMap(personData.data()!);
+    }
+    return person;
+  }
 
   void signInWithPhone(BuildContext context, String phoneNumber) async {
     try {
@@ -58,6 +73,49 @@ class AuthRepository {
 
       Navigator.of(context).pushNamedAndRemoveUntil(
         UserInformation.routeName,
+        (route) => false,
+      );
+    } catch (e) {
+      showSnackBar(context: context, content: e.toString());
+    }
+  }
+
+  void saveDataToFirebase({
+    required String name,
+    required String email,
+    required String upiID,
+    required File? profilePic,
+    required ProviderRef ref,
+    required BuildContext context,
+  }) async {
+    try {
+      String uid = auth.currentUser!.uid;
+      String photoUrl =
+          'https://png.pngitem.com/pimgs/s/649-6490124_katie-notopoulos-katienotopoulos-i-write-about-tech-round.png';
+
+      if (profilePic != null) {
+        photoUrl = await ref
+            .read(commonFirebaseStorageRepositoryProvider)
+            .storeFileToFirebase(
+              'profilePic/$uid',
+              profilePic,
+            );
+      }
+
+      var person = Person(
+        name: name,
+        phoneNumber: auth.currentUser!.uid,
+        email: email,
+        upiID: upiID,
+        photoUrl: photoUrl,
+      );
+
+      await firestore.collection("users").doc(uid).set(person.toMap());
+
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (ctx) {
+          return const HomeScreen();
+        }),
         (route) => false,
       );
     } catch (e) {

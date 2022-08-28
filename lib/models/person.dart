@@ -12,4 +12,24 @@ class Person {
     this.email,
     this.upiID,
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'photoUrl': photoUrl,
+      "phoneNumber": phoneNumber,
+      "upiID": upiID,
+      "email": email,
+    };
+  }
+
+  factory Person.fromMap(Map<String, dynamic> map) {
+    return Person(
+      name: map['name'],
+      phoneNumber: map['phoneNumber'],
+      photoUrl: map['photoUrl'],
+      upiID: map['upiID'],
+      email: map['email'],
+    );
+  }
 }
