@@ -1,5 +1,6 @@
 import 'package:bigbucks/common/utils/utils.dart';
 import 'package:bigbucks/features/auth/screens/otp_screen.dart';
+import 'package:bigbucks/features/auth/screens/user_information.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -39,6 +40,28 @@ class AuthRepository {
       );
     } on FirebaseAuthException catch (e) {
       showSnackBar(context: context, content: e.message!);
+    }
+  }
+
+  void verifyOTP({
+    required BuildContext context,
+    required String verificationId,
+    required String userOTP,
+  }) async {
+    try {
+      PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.credential(
+        verificationId: verificationId,
+        smsCode: userOTP,
+      );
+
+      await auth.signInWithCredential(phoneAuthCredential);
+
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        UserInformation.routeName,
+        (route) => false,
+      );
+    } catch (e) {
+      showSnackBar(context: context, content: e.toString());
     }
   }
 }
