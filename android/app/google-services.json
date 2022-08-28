@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "475746859979-g4dk0tpgc4vq06c86sm9jqbqs2h22qnj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.bigbucks",
+            "certificate_hash": "532aa75b70a6be1b2fbfcd7273d9f632a3867429"
+          }
+        },
+        {
           "client_id": "475746859979-0smij206brtjq7r7ijq7nc4mkdp9e7kk.apps.googleusercontent.com",
           "client_type": 3
         }
