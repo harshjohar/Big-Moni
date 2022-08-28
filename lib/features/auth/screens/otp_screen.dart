@@ -3,7 +3,8 @@ import 'package:bigbucks/features/auth/screens/user_information.dart';
 import 'package:flutter/material.dart';
 
 class OTPScreen extends StatefulWidget {
-  const OTPScreen({Key? key}) : super(key: key);
+  final String verificationId;
+  const OTPScreen({Key? key, required this.verificationId}) : super(key: key);
   static const String routeName = '/otp-screen';
 
   @override

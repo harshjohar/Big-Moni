@@ -1,17 +1,16 @@
-import 'package:bigbucks/features/auth/screens/user_information.dart';
-import 'package:bigbucks/features/home/screens/home_screen.dart';
 import 'package:bigbucks/features/landing/landing_screen.dart';
 import 'package:bigbucks/firebase_options.dart';
 import 'package:bigbucks/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -24,8 +23,12 @@ class MyApp extends StatelessWidget {
       title: 'Big Moni',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.indigo)
-              .copyWith(secondary: Colors.amber)),
+        colorScheme: ColorScheme.fromSwatch(
+          primarySwatch: Colors.indigo,
+        ).copyWith(
+          secondary: Colors.amber,
+        ),
+      ),
       home: const LandingScreen(),
       onGenerateRoute: (settings) => generateRoute(settings),
     );

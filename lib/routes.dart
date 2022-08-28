@@ -1,4 +1,4 @@
-import 'package:bigbucks/common/error_screen.dart';
+import 'package:bigbucks/common/screens/error_screen.dart';
 import 'package:bigbucks/features/auth/screens/login_screen.dart';
 import 'package:bigbucks/features/auth/screens/otp_screen.dart';
 import 'package:bigbucks/features/auth/screens/user_information.dart';
@@ -28,7 +28,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case (ContactScreen.routeName):
       return MaterialPageRoute(builder: (ctx) => const ContactScreen());
     case (OTPScreen.routeName):
-      return MaterialPageRoute(builder: (ctx) => const OTPScreen());
+      final verificationId = settings.arguments as String;
+      return MaterialPageRoute(
+        builder: (ctx) => OTPScreen(verificationId: verificationId),
+      );
     case (UserInformation.routeName):
       return MaterialPageRoute(builder: (ctx) => const UserInformation());
     default:
