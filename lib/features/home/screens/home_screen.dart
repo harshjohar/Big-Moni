@@ -1,3 +1,4 @@
+import 'package:bigbucks/colors.dart';
 import 'package:bigbucks/features/home/screens/add_debtor.dart';
 import 'package:bigbucks/features/home/screens/notifications_screen.dart';
 import 'package:bigbucks/features/home/widgets/creditors_list.dart';
@@ -20,7 +21,16 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: const Text("Big Moni"),
+          backgroundColor: CustomColors.blackColor,
           bottom: const TabBar(
+            indicator: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  width: 2.0,
+                  color: CustomColors.whiteColor,
+                ),
+              ),
+            ),
             tabs: [
               Tab(
                 text: "Debtors",
@@ -31,14 +41,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
           actions: [
-            // IconButton(
-            //   icon: const Icon(
-            //     Icons.add,
-            //   ),
-            //   onPressed: () {
-            //     Navigator.of(context).pushNamed(AddScreen.routeName);
-            //   },
-            // ),
             IconButton(
                 onPressed: () {
                   Navigator.of(context).pushNamed(ProfileScreen.routeName);
@@ -59,10 +61,11 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.add),
+          backgroundColor: CustomColors.blackColor,
           onPressed: () {
             Navigator.of(context).pushNamed(AddScreen.routeName);
           },
+          child: const Icon(Icons.add),
         ),
       ),
     );

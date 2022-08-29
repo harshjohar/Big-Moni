@@ -102,9 +102,11 @@ class AuthRepository {
             );
       }
 
+      print(auth.currentUser!.phoneNumber);
+
       var person = Person(
         name: name,
-        phoneNumber: auth.currentUser!.uid,
+        phoneNumber: auth.currentUser!.phoneNumber!,
         email: email,
         upiID: upiID,
         photoUrl: photoUrl,
