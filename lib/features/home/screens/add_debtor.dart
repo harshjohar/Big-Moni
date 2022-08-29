@@ -1,16 +1,18 @@
 import 'package:bigbucks/colors.dart';
+import 'package:bigbucks/features/home/controller/home_controller.dart';
 import 'package:bigbucks/features/home/screens/contacts_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AddScreen extends StatefulWidget {
+class AddScreen extends ConsumerStatefulWidget {
   const AddScreen({Key? key}) : super(key: key);
   static const String routeName = '/add-screen';
   @override
-  State<AddScreen> createState() => _AddScreenState();
+  ConsumerState<AddScreen> createState() => _AddScreenState();
 }
 
-class _AddScreenState extends State<AddScreen> {
+class _AddScreenState extends ConsumerState<AddScreen> {
   final _formKey = GlobalKey<FormState>();
 
   final _priceFocusNode = FocusNode();
@@ -27,6 +29,10 @@ class _AddScreenState extends State<AddScreen> {
 
   @override
   Widget build(BuildContext context) {
+    String phoneNumber = '';
+    double price = 0;
+    String description = '';
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Add Debt"),
@@ -46,6 +52,9 @@ class _AddScreenState extends State<AddScreen> {
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.75,
                           child: TextFormField(
+                            onSaved: (newValue) {
+                              phoneNumber = newValue!;
+                            },
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please select a contact';
@@ -80,6 +89,9 @@ class _AddScreenState extends State<AddScreen> {
                       decoration: const InputDecoration(
                         labelText: 'Price',
                       ),
+                      onSaved: (newValue) {
+                        price = double.parse(newValue!);
+                      },
                       validator: (value) {
                         if (value == null ||
                             value.isEmpty ||
@@ -101,6 +113,9 @@ class _AddScreenState extends State<AddScreen> {
                       decoration: const InputDecoration(
                         labelText: 'Description',
                       ),
+                      onSaved: (newValue) {
+                        description = newValue!;
+                      },
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Description is required';
@@ -120,9 +135,13 @@ class _AddScreenState extends State<AddScreen> {
               CupertinoButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Processing Data')),
-                    );
+                    _formKey.currentState!.save();
+                    ref.read(homeControllerProvider).addTransactionDebt(
+                          context,
+                          phoneNumber,
+                          price,
+                          description,
+                        );
                   }
                 },
                 color: CustomColors.blackColor,

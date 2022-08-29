@@ -54,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
         ),
-        body: TabBarView(
+        body: const TabBarView(
           children: [
             DebtorsList(),
             CreditorsList(),
