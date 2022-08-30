@@ -1,5 +1,6 @@
+import 'package:bigbucks/features/home/controller/home_controller.dart';
 import 'package:bigbucks/features/home/widgets/list_person.dart';
-import 'package:bigbucks/models/person.dart';
+import 'package:bigbucks/models/transaction_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -12,52 +13,65 @@ class CreditorsList extends ConsumerStatefulWidget {
 
 class _CreditorsListState extends ConsumerState<CreditorsList> {
   final total = 8900;
-
-  final jolie = Person(
-    name: "Angelina Jolie",
-    phoneNumber: "345678987",
-    photoUrl:
-        "https://deadline.com/wp-content/uploads/2022/03/Angelina-Jolie-photo-Netflix-Alexei-Hay-e1646407877581.jpeg",
-  );
-
-  final rachel = Person(
-    name: "Jennifer Aniston",
-    phoneNumber: "3824834394",
-    photoUrl:
-        "https://media1.popsugar-assets.com/files/thumbor/ptdgPx5tCvvD9kUsU7pQFMUkBIA/207x134:1865x1792/fit-in/2048xorig/filters:format_auto-!!-:strip_icc-!!-/2019/09/09/028/n/1922398/066318895d76e2ef0c31d8.46065434_/i/Jennifer-Aniston.jpg",
-  );
+  Future<List<TransactionViewModel>?> getDebtors() async {
+    List<TransactionViewModel>? creditors =
+        await ref.read(homeControllerProvider).getCreditors();
+    return creditors;
+  }
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(children: [
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                "Total",
-                style: TextStyle(fontSize: 20),
-              ),
-              Text(
-                total.toString(),
-                style: const TextStyle(fontSize: 20),
-              ),
-            ],
+      physics: const ScrollPhysics(),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  "Total",
+                  style: TextStyle(fontSize: 20),
+                ),
+                Text(
+                  total.toString(),
+                  style: const TextStyle(fontSize: 20),
+                ),
+              ],
+            ),
           ),
-        ),
-        ListPerson(
-          money: 20,
-          user: jolie,
-          type: Type.credit,
-        ),
-        ListPerson(
-          money: 20,
-          user: rachel,
-          type: Type.credit,
-        ),
-      ]),
+          Flexible(
+            child: FutureBuilder(
+              future: getDebtors(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState != ConnectionState.done) {
+                  return const CircularProgressIndicator();
+                } else {
+                  final List<TransactionViewModel>? data =
+                      snapshot.data as List<TransactionViewModel>?;
+                  return ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      final person = data![index];
+                      return ListPerson(
+                        user: person.name,
+                        money: person.money,
+                        type: Type.debt,
+                        photoUrl: person.photoUrl,
+                        otherUserId: person.otherUserUid,
+                      );
+                    },
+                    itemCount: data?.length,
+                  );
+                }
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -1,14 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class TransactionModel {
-  final String debitorId;
+  final String debtorId;
   final String creditorId;
   final double money;
   final String description;
-  final FieldValue timestamp;
+  final Timestamp timestamp;
 
   TransactionModel({
-    required this.debitorId,
+    required this.debtorId,
     required this.creditorId,
     required this.description,
     required this.money,
@@ -17,7 +17,7 @@ class TransactionModel {
 
   Map<String, dynamic> toMap() {
     return {
-      'debitorId': debitorId,
+      'debtorId': debtorId,
       'creditorId': creditorId,
       'description': description,
       'money': money,
@@ -27,7 +27,7 @@ class TransactionModel {
 
   factory TransactionModel.fromMap(Map<String, dynamic> map) {
     return TransactionModel(
-      debitorId: map['debitorId'],
+      debtorId: map['debtorId'],
       creditorId: map['creditorId'],
       description: map['description'],
       money: map['money'],

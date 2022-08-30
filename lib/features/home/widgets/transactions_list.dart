@@ -25,10 +25,7 @@ class TransactionList extends StatelessWidget {
               ],
             ),
           ),
-          TransactionItem(),
-          TransactionItem(),
-          TransactionItem(),
-          TransactionItem(),
+          const TransactionItem(),
         ],
       ),
     );

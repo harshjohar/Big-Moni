@@ -5,9 +5,6 @@ class TransactionItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      // TODO
-      child: Text("Transaction"),
-    );
+    return const Text("Transaction");
   }
 }

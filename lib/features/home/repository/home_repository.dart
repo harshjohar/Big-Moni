@@ -35,19 +35,28 @@ class HomeRespository {
         final debtorUid = debtorUidDoc.docs[0].id;
 
         var transaction = TransactionModel(
-          debitorId: debtorUid,
+          debtorId: debtorUid,
           creditorId: uid,
           description: description,
           money: price,
-          timestamp: FieldValue.serverTimestamp(),
+          timestamp: Timestamp.now(),
         );
 
         final addedTransaction =
             await firestore.collection("transaction").add(transaction.toMap());
 
-        final hashedId =
-            (uid.compareTo(debtorUid) < -1 ? uid + debtorUid : debtorUid + uid);
-        await firestore.collection("creditDebitMapping").doc(hashedId).set(
+        await firestore.collection("userTransactions").doc(uid).set(
+          {
+            'transactions': FieldValue.arrayUnion(
+              [addedTransaction.id],
+            ),
+          },
+          SetOptions(
+            merge: true,
+          ),
+        );
+
+        await firestore.collection("userTransactions").doc(debtorUid).set(
           {
             'transactions': FieldValue.arrayUnion(
               [addedTransaction.id],
@@ -70,17 +79,55 @@ class HomeRespository {
     Navigator.of(context).pop();
   }
 
+  Future<void> getTransactionsUser() async {
+    final userTransactions = await firestore
+        .collection('userTransactions')
+        .doc(auth.currentUser!.uid)
+        .get();
+
+    List<TransactionModel> transactions = [];
+
+    if (userTransactions.data() != null) {
+      final transactionsIdList = userTransactions.data()!['transactions'];
+
+      for (var transactionId in transactionsIdList) {
+        final transaction = await firestore
+            .collection("transaction")
+            .doc(transactionId as String)
+            .get();
+        final transactionData = transaction.data();
+        transactions.add(
+          TransactionModel.fromMap(
+            transactionData!,
+          ),
+        );
+      }
+    }
+  }
+
   Future<List<TransactionViewModel>?> getDebtors() async {
-    final transactions = await firestore.collection('transactions').get();
+    TransactionViewModel t = TransactionViewModel(
+      name: "Jolie",
+      money: "304",
+      photoUrl:
+          "https://deadline.com/wp-content/uploads/2022/03/Angelina-Jolie-photo-Netflix-Alexei-Hay-e1646407877581.jpeg",
+      otherUserUid: "lol",
+    );
+    List<TransactionViewModel>? debtors = [t];
     // TODO
-    List<TransactionViewModel>? creditors = [];
-    return creditors;
+    return debtors;
   }
 
   Future<List<TransactionViewModel>?> getCreditors() async {
-    final transactions = await firestore.collection('transactions').get();
+    TransactionViewModel t = TransactionViewModel(
+      name: "Rachel",
+      money: "304",
+      photoUrl:
+          "https://media1.popsugar-assets.com/files/thumbor/ptdgPx5tCvvD9kUsU7pQFMUkBIA/207x134:1865x1792/fit-in/2048xorig/filters:format_auto-!!-:strip_icc-!!-/2019/09/09/028/n/1922398/066318895d76e2ef0c31d8.46065434_/i/Jennifer-Aniston.jpg",
+      otherUserUid: "lol",
+    );
     // TODO
-    List<TransactionViewModel>? debtors = [];
-    return debtors;
+    List<TransactionViewModel>? creditors = [t];
+    return creditors;
   }
 }

@@ -1,24 +1,22 @@
+import 'package:bigbucks/colors.dart';
 import 'package:bigbucks/features/home/screens/user_screen.dart';
-import 'package:bigbucks/models/person.dart';
 import 'package:flutter/material.dart';
 
-enum Type { debit, credit }
-
-class UserArguments {
-  final Person user;
-
-  UserArguments(this.user);
-}
+enum Type { debt, credit }
 
 class ListPerson extends StatelessWidget {
-  final Person user;
-  final double money;
+  final String user;
+  final String money;
   final Type type;
+  final String photoUrl;
+  final String otherUserId;
   const ListPerson({
     Key? key,
     required this.user,
     required this.money,
     required this.type,
+    required this.photoUrl,
+    required this.otherUserId,
   }) : super(key: key);
 
   @override
@@ -27,7 +25,7 @@ class ListPerson extends StatelessWidget {
       onTap: () {
         Navigator.of(context).pushNamed(
           UserScreen.routeName,
-          arguments: UserArguments(user),
+          arguments: user,
         );
       },
       child: Container(
@@ -35,40 +33,33 @@ class ListPerson extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
         decoration: const BoxDecoration(
             border: Border(
-          bottom: BorderSide(width: 1.0, color: Colors.indigo),
+          bottom: BorderSide(width: 1.0, color: CustomColors.blackColor),
         )),
         child: Row(
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(9999),
-              child: user.photoUrl != null
-                  ? Image.network(
-                      user.photoUrl!,
-                      height: 60,
-                      width: 60,
-                      fit: BoxFit.cover,
-                    )
-                  : Image.asset(
-                      "assets/images/user.png",
-                      height: 60,
-                      width: 60,
-                      fit: BoxFit.cover,
-                    ),
+              child: Image.network(
+                photoUrl,
+                height: 60,
+                width: 60,
+                fit: BoxFit.cover,
+              ),
             ),
             const SizedBox(
               width: 20,
             ),
             Expanded(
               child: Text(
-                user.name,
+                user,
                 style:
                     const TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
               ),
             ),
             Text(
-              money.ceil().toString(),
+              money,
               style: TextStyle(
-                color: type == Type.debit ? Colors.green : Colors.red,
+                color: type == Type.debt ? Colors.green : Colors.red,
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),

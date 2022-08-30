@@ -54,10 +54,10 @@ class _ContactScreenState extends State<ContactScreen> {
   getAllContacts() async {
     PermissionStatus contactsPermissionsStatus = await _contactsPermissions();
     if (contactsPermissionsStatus == PermissionStatus.granted) {
-      List<Contact> _contacts =
+      List<Contact> c =
           (await ContactsService.getContacts(withThumbnails: false)).toList();
       setState(() {
-        contacts = _contacts;
+        contacts = c;
       });
     }
   }
