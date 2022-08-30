@@ -23,13 +23,14 @@ class _ContactScreenState extends State<ContactScreen> {
     });
   }
 
-  filterContacts() {
+  void filterContacts() {
     List<Contact> l = [];
     l.addAll(contacts);
     if (_contactNameController.text.isNotEmpty) {
       l.retainWhere((ctc) {
         String searchterm = _contactNameController.text.toLowerCase();
-        String contactName = ctc.displayName!.toLowerCase();
+        String contactName =
+            ctc.displayName != null ? ctc.displayName!.toLowerCase() : "";
         return contactName.contains(searchterm);
       });
     }
@@ -39,10 +40,9 @@ class _ContactScreenState extends State<ContactScreen> {
     });
   }
 
-  _contactsPermissions() async {
+  Future<PermissionStatus> _contactsPermissions() async {
     PermissionStatus permission = await Permission.contacts.status;
-    if (permission != PermissionStatus.granted &&
-        permission != PermissionStatus.denied) {
+    if (permission != PermissionStatus.granted) {
       Map<Permission, PermissionStatus> permissionStatus =
           await [Permission.contacts].request();
       return permissionStatus[Permission.contacts] ?? PermissionStatus.granted;
@@ -51,7 +51,7 @@ class _ContactScreenState extends State<ContactScreen> {
     }
   }
 
-  getAllContacts() async {
+  void getAllContacts() async {
     PermissionStatus contactsPermissionsStatus = await _contactsPermissions();
     if (contactsPermissionsStatus == PermissionStatus.granted) {
       List<Contact> c =
@@ -109,9 +109,18 @@ class _ContactScreenState extends State<ContactScreen> {
                 Contact contact = isSearching == true
                     ? contactsFiltered[index]
                     : contacts[index];
+                if (contact.displayName == null ||
+                    contact.phones == null ||
+                    contact.phones!.isEmpty) {
+                  return Container();
+                }
                 return ListTile(
-                  title: Text(contact.displayName!),
-                  subtitle: Text(contact.phones!.elementAt(0).value!),
+                  title: contact.displayName != null
+                      ? Text(contact.displayName!)
+                      : const Text("bug"),
+                  subtitle: contact.phones != null && contact.phones!.isNotEmpty
+                      ? Text(contact.phones!.elementAt(0).value!)
+                      : const Text("No Number"),
                   leading:
                       (contact.avatar != null && contact.avatar!.isNotEmpty)
                           ? CircleAvatar(
@@ -124,6 +133,12 @@ class _ContactScreenState extends State<ContactScreen> {
                                 style: const TextStyle(color: Colors.white),
                               ),
                             ),
+                  onTap: () {
+                    Navigator.pop(
+                      context,
+                      contact.phones!.elementAt(0).value as String,
+                    );
+                  },
                 );
               },
             ),

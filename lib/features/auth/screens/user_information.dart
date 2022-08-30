@@ -60,87 +60,90 @@ class _UserInformationState extends ConsumerState<UserInformation> {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Stack(
-                  children: [
-                    image == null
-                        ? const CircleAvatar(
-                            backgroundImage: NetworkImage(
-                              'https://png.pngitem.com/pimgs/s/649-6490124_katie-notopoulos-katienotopoulos-i-write-about-tech-round.png',
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10.0),
+            child: Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Stack(
+                    children: [
+                      image == null
+                          ? const CircleAvatar(
+                              backgroundImage: NetworkImage(
+                                'https://png.pngitem.com/pimgs/s/649-6490124_katie-notopoulos-katienotopoulos-i-write-about-tech-round.png',
+                              ),
+                              radius: 64,
+                            )
+                          : CircleAvatar(
+                              backgroundImage: FileImage(
+                                image!,
+                              ),
+                              radius: 64,
                             ),
-                            radius: 64,
-                          )
-                        : CircleAvatar(
-                            backgroundImage: FileImage(
-                              image!,
-                            ),
-                            radius: 64,
-                          ),
-                    Positioned(
-                      bottom: -10,
-                      left: 80,
-                      child: IconButton(
-                        onPressed: selectImage,
-                        icon: const Icon(
-                          Icons.add_a_photo,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Container(
-                      width: size.width * 0.85,
-                      padding: const EdgeInsets.all(20),
-                      child: TextField(
-                        controller: nameController,
-                        decoration: const InputDecoration(
-                          hintText: 'Enter your name',
-                          label: Text("Name"),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: size.width * 0.85,
-                      padding: const EdgeInsets.all(20),
-                      child: TextField(
-                        controller: emailController,
-                        decoration: const InputDecoration(
-                          hintText: 'Enter your email',
-                          label: Text("Email"),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: size.width * 0.85,
-                      padding: const EdgeInsets.all(20),
-                      child: TextField(
-                        controller: upiController,
-                        decoration: const InputDecoration(
-                          hintText: 'UPI ID',
-                          label: Text(
-                            "UPI ID (if applicable)",
+                      Positioned(
+                        bottom: -10,
+                        left: 80,
+                        child: IconButton(
+                          onPressed: selectImage,
+                          icon: const Icon(
+                            Icons.add_a_photo,
                           ),
                         ),
                       ),
-                    ),
-                    const Text(
-                      "If you have no UPI ID, then can leave this field empty",
-                      style: TextStyle(
-                        fontSize: 12,
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Container(
+                        width: size.width * 0.85,
+                        padding: const EdgeInsets.all(20),
+                        child: TextField(
+                          controller: nameController,
+                          decoration: const InputDecoration(
+                            hintText: 'Enter your name',
+                            label: Text("Name"),
+                          ),
+                        ),
                       ),
-                    ),
-                    CupertinoButton(
-                      onPressed: storeUserData,
-                      child: const Text("Submit"),
-                    ),
-                  ],
-                ),
-              ],
+                      Container(
+                        width: size.width * 0.85,
+                        padding: const EdgeInsets.all(20),
+                        child: TextField(
+                          controller: emailController,
+                          decoration: const InputDecoration(
+                            hintText: 'Enter your email',
+                            label: Text("Email"),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: size.width * 0.85,
+                        padding: const EdgeInsets.all(20),
+                        child: TextField(
+                          controller: upiController,
+                          decoration: const InputDecoration(
+                            hintText: 'UPI ID',
+                            label: Text(
+                              "UPI ID (if applicable)",
+                            ),
+                          ),
+                        ),
+                      ),
+                      const Text(
+                        "If you have no UPI ID, then can leave this field empty",
+                        style: TextStyle(
+                          fontSize: 12,
+                        ),
+                      ),
+                      CupertinoButton(
+                        onPressed: storeUserData,
+                        child: const Text("Submit"),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),

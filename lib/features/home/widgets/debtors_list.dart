@@ -19,6 +19,10 @@ class _DebtorsListState extends ConsumerState<DebtorsList> {
     return debtors;
   }
 
+  void dummy() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -48,6 +52,11 @@ class _DebtorsListState extends ConsumerState<DebtorsList> {
                       Text(
                         total.toString(),
                         style: const TextStyle(fontSize: 20),
+                      ),
+                      IconButton(
+                        onPressed: dummy,
+                        icon: const Icon(Icons.refresh),
+                        color: Colors.indigo,
                       ),
                     ],
                   ),

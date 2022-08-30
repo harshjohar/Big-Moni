@@ -1,4 +1,5 @@
 import 'package:bigbucks/colors.dart';
+import 'package:bigbucks/common/utils/utils.dart';
 import 'package:bigbucks/features/home/controller/home_controller.dart';
 import 'package:bigbucks/features/home/screens/contacts_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,12 +19,14 @@ class _AddScreenState extends ConsumerState<AddScreen> {
   final _priceFocusNode = FocusNode();
   final _descriptionFocusNode = FocusNode();
   final _phoneNumberFocusNode = FocusNode();
+  final _phoneNumberController = TextEditingController();
 
   @override
   void dispose() {
     _priceFocusNode.dispose();
     _descriptionFocusNode.dispose();
     _phoneNumberFocusNode.dispose();
+    _phoneNumberController.dispose();
     super.dispose();
   }
 
@@ -52,6 +55,7 @@ class _AddScreenState extends ConsumerState<AddScreen> {
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.75,
                           child: TextFormField(
+                            controller: _phoneNumberController,
                             onSaved: (newValue) {
                               phoneNumber = newValue!;
                             },
@@ -74,9 +78,13 @@ class _AddScreenState extends ConsumerState<AddScreen> {
                           ),
                         ),
                         IconButton(
-                          onPressed: () {
-                            Navigator.of(context)
-                                .pushNamed(ContactScreen.routeName);
+                          onPressed: () async {
+                            final ph = await Navigator.of(context)
+                                .pushNamed(ContactScreen.routeName) as String;
+                            setState(() {
+                              _phoneNumberController.text =
+                                  formatPhoneNumber(ph);
+                            });
                           },
                           icon: const Icon(
                             Icons.contacts,
@@ -138,7 +146,7 @@ class _AddScreenState extends ConsumerState<AddScreen> {
                     _formKey.currentState!.save();
                     ref.read(homeControllerProvider).addTransactionDebt(
                           context,
-                          phoneNumber,
+                          formatPhoneNumber(phoneNumber),
                           price,
                           description,
                         );

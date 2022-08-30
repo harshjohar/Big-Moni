@@ -71,3 +71,19 @@ Future<bool> connectivityChecker() async {
   }
   return connected;
 }
+
+String formatPhoneNumber(String phoneNumber) {
+  print(phoneNumber);
+
+  phoneNumber = phoneNumber.replaceAll(" ", "");
+  print(phoneNumber);
+  if (phoneNumber[0] == '0') {
+    phoneNumber = phoneNumber.substring(1);
+  }
+  if (phoneNumber.contains("+91") == true) {
+    return phoneNumber;
+  }
+  phoneNumber = "+91$phoneNumber";
+  print(phoneNumber);
+  return phoneNumber;
+}

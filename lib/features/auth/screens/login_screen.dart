@@ -40,7 +40,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Let's get you in my boi"),
+        title: const Text("Login"),
         backgroundColor: CustomColors.blackColor,
       ),
       body: SingleChildScrollView(
