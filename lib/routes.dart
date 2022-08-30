@@ -22,7 +22,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case (UserScreen.routeName):
       return MaterialPageRoute(builder: (ctx) {
         final args = settings.arguments as String;
-        return UserScreen(user: args);
+        return UserScreen(userUid: args);
       });
     case (ContactScreen.routeName):
       return MaterialPageRoute(builder: (ctx) => const ContactScreen());

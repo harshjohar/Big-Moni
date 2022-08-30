@@ -43,6 +43,7 @@ dependencies:
   permission_handler: ^10.0.0
   image_picker: ^0.8.5+3
   enough_giphy_flutter: ^0.3.0
+  intl: ^0.17.0
   
 dev_dependencies:
   flutter_test:

@@ -1,4 +1,5 @@
 import 'package:bigbucks/colors.dart';
+import 'package:bigbucks/common/screens/loader.dart';
 import 'package:bigbucks/features/landing/landing_screen.dart';
 import 'package:bigbucks/features/profile/repository/profile_repository.dart';
 import 'package:bigbucks/models/person.dart';
@@ -16,7 +17,7 @@ class ProfileScreen extends ConsumerStatefulWidget {
 
 class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   Future<Person?> getUserDetails() async {
-    return ref.read(profileRepositoryProvider).getUserDetails();
+    return ref.read(profileRepositoryProvider).getLoggedInUserDetails();
   }
 
   @override
@@ -29,6 +30,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       body: FutureBuilder(
         future: getUserDetails(),
         builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Loader();
+          }
           Person userDetails = snapshot.data as Person;
           return Center(
             child: Column(

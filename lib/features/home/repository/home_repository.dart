@@ -70,6 +70,24 @@ class HomeRespository {
             merge: true,
           ),
         );
+
+        final hashedUID = (uid.compareTo(debtorUid) == -1
+            ? uid + debtorUid
+            : debtorUid + uid);
+
+        await firestore
+            .collection('userMappingTransactions')
+            .doc(hashedUID)
+            .set(
+          {
+            'transactions': FieldValue.arrayUnion(
+              [addedTransaction.id],
+            ),
+          },
+          SetOptions(
+            merge: true,
+          ),
+        );
       } else {
         showSnackBar(
           context: context,
@@ -142,14 +160,14 @@ class HomeRespository {
     for (var key in currStatusAmongUsers.keys) {
       // key = otherUserUid, value = balance(money)
       final value = currStatusAmongUsers[key]!;
-      if (value > 0) {
+      if (value < 0) {
         final userDetails =
             (await firestore.collection('users').doc(key).get()).data();
         TransactionViewModel t = TransactionViewModel(
           name: userDetails!['name'],
-          money: value.toString(),
+          money: (-value).toString(),
           photoUrl: userDetails['photoUrl'],
-          otherUserUid: "lol",
+          otherUserUid: key,
         );
 
         debtors.add(t);
@@ -160,18 +178,17 @@ class HomeRespository {
 
   Future<List<TransactionViewModel>?> getCreditors() async {
     creditors = [];
-    print(currStatusAmongUsers);
     for (var key in currStatusAmongUsers.keys) {
       // key = otherUserUid, value = balance(money)
       final value = currStatusAmongUsers[key]!;
-      if (value < 0) {
+      if (value > 0) {
         final userDetails =
             (await firestore.collection('users').doc(key).get()).data();
         TransactionViewModel t = TransactionViewModel(
           name: userDetails!['name'],
-          money: (-value).toString(),
+          money: value.toString(),
           photoUrl: userDetails['photoUrl'],
-          otherUserUid: "lol",
+          otherUserUid: key,
         );
 
         creditors.add(t);

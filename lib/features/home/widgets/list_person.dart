@@ -25,7 +25,7 @@ class ListPerson extends StatelessWidget {
       onTap: () {
         Navigator.of(context).pushNamed(
           UserScreen.routeName,
-          arguments: user,
+          arguments: otherUserId,
         );
       },
       child: Container(
