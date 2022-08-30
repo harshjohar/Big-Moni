@@ -53,8 +53,8 @@ class _UserScreenState extends ConsumerState<UserScreen> {
                         child: userDetails.photoUrl != null
                             ? Image.network(
                                 userDetails.photoUrl!,
-                                height: 150,
-                                width: 150,
+                                height: 100,
+                                width: 100,
                                 fit: BoxFit.cover,
                               )
                             : Image.asset(

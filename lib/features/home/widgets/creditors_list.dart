@@ -13,7 +13,6 @@ class CreditorsList extends ConsumerStatefulWidget {
 }
 
 class _CreditorsListState extends ConsumerState<CreditorsList> {
-  final total = 8900;
   Future<List<TransactionViewModel>?> getCreditors() async {
     List<TransactionViewModel>? creditors =
         await ref.read(homeControllerProvider).getCreditors();
