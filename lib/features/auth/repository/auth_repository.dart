@@ -71,6 +71,7 @@ class AuthRepository {
 
       await auth.signInWithCredential(phoneAuthCredential);
 
+      // ignore: use_build_context_synchronously
       Navigator.of(context).pushNamedAndRemoveUntil(
         UserInformation.routeName,
         (route) => false,
@@ -112,6 +113,7 @@ class AuthRepository {
 
       await firestore.collection("users").doc(uid).set(person.toMap());
 
+      // ignore: use_build_context_synchronously
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (ctx) {
           return const HomeScreen();

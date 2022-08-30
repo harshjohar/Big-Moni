@@ -34,4 +34,8 @@ class HomeController {
     List<TransactionViewModel>? debtors = await homeRespository.getDebtors();
     return debtors;
   }
+
+  Future<void> getUserTransactions() async {
+    return await homeRespository.getTransactionsUser();
+  }
 }

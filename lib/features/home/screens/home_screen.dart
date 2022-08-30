@@ -1,19 +1,25 @@
 import 'package:bigbucks/colors.dart';
+import 'package:bigbucks/features/home/controller/home_controller.dart';
 import 'package:bigbucks/features/home/screens/add_debtor.dart';
 import 'package:bigbucks/features/home/screens/notifications_screen.dart';
 import 'package:bigbucks/features/home/widgets/creditors_list.dart';
 import 'package:bigbucks/features/home/widgets/debtors_list.dart';
 import 'package:bigbucks/features/profile/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen> {
+  Future<void> getUserTransactions() {
+    return ref.read(homeControllerProvider).getUserTransactions();
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -54,11 +60,16 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
         ),
-        body: const TabBarView(
-          children: [
-            DebtorsList(),
-            CreditorsList(),
-          ],
+        body: FutureBuilder(
+          future: getUserTransactions(),
+          builder: (context, snapshot) {
+            return const TabBarView(
+              children: [
+                DebtorsList(),
+                CreditorsList(),
+              ],
+            );
+          },
         ),
         floatingActionButton: FloatingActionButton(
           backgroundColor: CustomColors.blackColor,

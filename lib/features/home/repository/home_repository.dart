@@ -17,6 +17,10 @@ class HomeRespository {
   final FirebaseAuth auth;
   final FirebaseFirestore firestore;
 
+  Map<String, double> currStatusAmongUsers = {};
+
+  List<TransactionViewModel> debtors = [];
+  List<TransactionViewModel> creditors = [];
   HomeRespository(this.auth, this.firestore);
 
   void addTransactionDebt(BuildContext context, String phoneNumber,
@@ -76,6 +80,7 @@ class HomeRespository {
       showSnackBar(context: context, content: e.toString());
     }
 
+    // ignore: use_build_context_synchronously
     Navigator.of(context).pop();
   }
 
@@ -85,7 +90,11 @@ class HomeRespository {
         .doc(auth.currentUser!.uid)
         .get();
 
+    // all transactions of the logged in user
     List<TransactionModel> transactions = [];
+
+    // creditorId == userId => moni++
+    // debtorId == userId => moni--
 
     if (userTransactions.data() != null) {
       final transactionsIdList = userTransactions.data()!['transactions'];
@@ -103,31 +112,70 @@ class HomeRespository {
         );
       }
     }
+
+    for (var transaction in transactions) {
+      if (transaction.creditorId == auth.currentUser!.uid) {
+        if (currStatusAmongUsers.containsKey(transaction.debtorId) &&
+            currStatusAmongUsers[transaction.debtorId] != null) {
+          double t = currStatusAmongUsers[transaction.debtorId]!;
+          t = t - transaction.money;
+          currStatusAmongUsers[transaction.debtorId] = t;
+        } else {
+          currStatusAmongUsers[transaction.debtorId] = -transaction.money;
+        }
+      } else {
+        if (currStatusAmongUsers.containsKey(transaction.creditorId) &&
+            currStatusAmongUsers[transaction.creditorId] != null) {
+          double t = currStatusAmongUsers[transaction.creditorId]!;
+          t = t + transaction.money;
+          currStatusAmongUsers[transaction.creditorId] = t;
+        } else {
+          currStatusAmongUsers[transaction.creditorId] = transaction.money;
+        }
+      }
+    }
   }
 
   Future<List<TransactionViewModel>?> getDebtors() async {
-    TransactionViewModel t = TransactionViewModel(
-      name: "Jolie",
-      money: "304",
-      photoUrl:
-          "https://deadline.com/wp-content/uploads/2022/03/Angelina-Jolie-photo-Netflix-Alexei-Hay-e1646407877581.jpeg",
-      otherUserUid: "lol",
-    );
-    List<TransactionViewModel>? debtors = [t];
-    // TODO
+    debtors = [];
+    for (var key in currStatusAmongUsers.keys) {
+      // key = otherUserUid, value = balance(money)
+      final value = currStatusAmongUsers[key]!;
+      if (value > 0) {
+        final userDetails =
+            (await firestore.collection('users').doc(key).get()).data();
+        TransactionViewModel t = TransactionViewModel(
+          name: userDetails!['name'],
+          money: value.toString(),
+          photoUrl: userDetails['photoUrl'],
+          otherUserUid: "lol",
+        );
+
+        debtors.add(t);
+      }
+    }
     return debtors;
   }
 
   Future<List<TransactionViewModel>?> getCreditors() async {
-    TransactionViewModel t = TransactionViewModel(
-      name: "Rachel",
-      money: "304",
-      photoUrl:
-          "https://media1.popsugar-assets.com/files/thumbor/ptdgPx5tCvvD9kUsU7pQFMUkBIA/207x134:1865x1792/fit-in/2048xorig/filters:format_auto-!!-:strip_icc-!!-/2019/09/09/028/n/1922398/066318895d76e2ef0c31d8.46065434_/i/Jennifer-Aniston.jpg",
-      otherUserUid: "lol",
-    );
-    // TODO
-    List<TransactionViewModel>? creditors = [t];
+    creditors = [];
+    print(currStatusAmongUsers);
+    for (var key in currStatusAmongUsers.keys) {
+      // key = otherUserUid, value = balance(money)
+      final value = currStatusAmongUsers[key]!;
+      if (value < 0) {
+        final userDetails =
+            (await firestore.collection('users').doc(key).get()).data();
+        TransactionViewModel t = TransactionViewModel(
+          name: userDetails!['name'],
+          money: (-value).toString(),
+          photoUrl: userDetails['photoUrl'],
+          otherUserUid: "lol",
+        );
+
+        creditors.add(t);
+      }
+    }
     return creditors;
   }
 }

@@ -13,7 +13,7 @@ class CreditorsList extends ConsumerStatefulWidget {
 
 class _CreditorsListState extends ConsumerState<CreditorsList> {
   final total = 8900;
-  Future<List<TransactionViewModel>?> getDebtors() async {
+  Future<List<TransactionViewModel>?> getCreditors() async {
     List<TransactionViewModel>? creditors =
         await ref.read(homeControllerProvider).getCreditors();
     return creditors;
@@ -44,7 +44,7 @@ class _CreditorsListState extends ConsumerState<CreditorsList> {
           ),
           Flexible(
             child: FutureBuilder(
-              future: getDebtors(),
+              future: getCreditors(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState != ConnectionState.done) {
                   return const CircularProgressIndicator();
@@ -59,7 +59,7 @@ class _CreditorsListState extends ConsumerState<CreditorsList> {
                       return ListPerson(
                         user: person.name,
                         money: person.money,
-                        type: Type.debt,
+                        type: Type.credit,
                         photoUrl: person.photoUrl,
                         otherUserId: person.otherUserUid,
                       );
