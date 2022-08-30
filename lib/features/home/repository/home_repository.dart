@@ -113,6 +113,7 @@ class HomeRespository {
       }
     }
 
+    currStatusAmongUsers = {};
     for (var transaction in transactions) {
       if (transaction.creditorId == auth.currentUser!.uid) {
         if (currStatusAmongUsers.containsKey(transaction.debtorId) &&
