@@ -73,10 +73,7 @@ Future<bool> connectivityChecker() async {
 }
 
 String formatPhoneNumber(String phoneNumber) {
-  print(phoneNumber);
-
   phoneNumber = phoneNumber.replaceAll(" ", "");
-  print(phoneNumber);
   if (phoneNumber[0] == '0') {
     phoneNumber = phoneNumber.substring(1);
   }
@@ -84,6 +81,5 @@ String formatPhoneNumber(String phoneNumber) {
     return phoneNumber;
   }
   phoneNumber = "+91$phoneNumber";
-  print(phoneNumber);
   return phoneNumber;
 }
