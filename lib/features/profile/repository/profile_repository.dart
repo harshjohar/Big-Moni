@@ -42,7 +42,6 @@ class ProfileRepository {
         .data();
 
     final transactionIdList = transactionsIdDoc!['transactions'];
-    print(transactionIdList);
     List<TransactionModel> transactions = [];
     for (var transactionId in transactionIdList) {
       final transaction = await firestore
