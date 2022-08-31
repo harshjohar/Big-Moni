@@ -3,7 +3,7 @@ class TransactionViewModel {
   final String name;
   final String money;
   final String photoUrl;
-  final String otherUserUid;
+  final String otherUserUid; // works are description for Profile screen.
 
   TransactionViewModel({
     required this.name,

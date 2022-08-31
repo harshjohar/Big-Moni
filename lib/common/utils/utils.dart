@@ -53,6 +53,23 @@ double accumulateHomeTransactions(List<TransactionViewModel>? transactions) {
   return answer;
 }
 
+double accumulateProfileTransactions(
+    // [debt, credit]
+    List<TransactionViewModel>? transactions) {
+  double answer = 0;
+  if (transactions == null) {
+    return answer;
+  }
+  for (var transaction in transactions) {
+    if (transaction.money[0] == '-') {
+      answer += double.parse(transaction.money);
+    } else {
+      answer += double.parse(transaction.money);
+    }
+  }
+  return answer;
+}
+
 Future<bool> connectivityChecker() async {
   var connected = false;
   try {

@@ -1,5 +1,6 @@
 import 'package:bigbucks/models/person.dart';
 import 'package:bigbucks/models/transaction.dart';
+import 'package:bigbucks/models/transaction_view_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -61,5 +62,65 @@ class ProfileRepository {
     });
 
     return transactions;
+  }
+
+  Future<List<TransactionViewModel>?> getUserTransactions() async {
+    final userTransactionsIds = await firestore
+        .collection('userTransactions')
+        .doc(auth.currentUser!.uid)
+        .get();
+
+    // all transactions of the logged in user
+    List<TransactionModel> transactions = [];
+
+    if (userTransactionsIds.data() != null) {
+      final transactionsIdList = userTransactionsIds.data()!['transactions'];
+
+      for (var transactionId in transactionsIdList) {
+        final transaction = await firestore
+            .collection("transaction")
+            .doc(transactionId as String)
+            .get();
+        final transactionData = transaction.data();
+        transactions.add(
+          TransactionModel.fromMap(
+            transactionData!,
+          ),
+        );
+      }
+    }
+    transactions.sort((a, b) => b.timestamp.compareTo(a.timestamp));
+
+    List<TransactionViewModel> userTransactions = [];
+
+    for (var transaction in transactions) {
+      if (transaction.debtorId == auth.currentUser!.uid) {
+        final user = await firestore
+            .collection('users')
+            .doc(transaction.creditorId)
+            .get();
+
+        userTransactions.add(
+          TransactionViewModel(
+            name: user.data()!['name'],
+            money: (-transaction.money).toString(),
+            photoUrl: user.data()!['photoUrl'],
+            otherUserUid: transaction.description,
+          ),
+        );
+      } else {
+        final user =
+            await firestore.collection('users').doc(transaction.debtorId).get();
+        userTransactions.add(
+          TransactionViewModel(
+            name: user.data()!['name'],
+            money: transaction.money.toString(),
+            photoUrl: user.data()!['photoUrl'],
+            otherUserUid: transaction.description,
+          ),
+        );
+      }
+    }
+    return userTransactions;
   }
 }
