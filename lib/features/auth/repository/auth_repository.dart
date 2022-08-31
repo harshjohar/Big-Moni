@@ -83,7 +83,7 @@ class AuthRepository {
     }
   }
 
-  void saveDataToFirebase({
+  Future<void> saveDataToFirebase({
     required String name,
     required String email,
     required String upiID,

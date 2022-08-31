@@ -4,9 +4,6 @@ import 'package:bigbucks/colors.dart';
 import 'package:bigbucks/common/utils/utils.dart';
 import 'package:bigbucks/features/auth/provider/auth_controller.dart';
 import 'package:bigbucks/models/person.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -25,6 +22,7 @@ class _UserInformationState extends ConsumerState<UserInformation> {
   final TextEditingController upiController = TextEditingController();
   File? image;
 
+  bool isLoading = false;
   Person? person;
   void getPerson() async {
     Person? p = await ref.read(authControllerProvider).getUserData();
@@ -62,8 +60,12 @@ class _UserInformationState extends ConsumerState<UserInformation> {
     String email = emailController.text.trim();
     String upiID = upiController.text.trim();
 
+    setState(() {
+      isLoading = true;
+    });
+
     if (name.isNotEmpty && email.isNotEmpty) {
-      ref.read(authControllerProvider).sendDataToFirebase(
+      await ref.read(authControllerProvider).sendDataToFirebase(
             context,
             name,
             email,
@@ -71,6 +73,9 @@ class _UserInformationState extends ConsumerState<UserInformation> {
             image,
           );
     }
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -163,6 +168,7 @@ class _UserInformationState extends ConsumerState<UserInformation> {
                         onPressed: storeUserData,
                         child: const Text("Submit"),
                       ),
+                      if (isLoading) const CircularProgressIndicator(),
                     ],
                   ),
                 ],

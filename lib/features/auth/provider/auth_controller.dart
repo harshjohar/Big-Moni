@@ -44,14 +44,14 @@ class AuthController {
     );
   }
 
-  void sendDataToFirebase(
+  Future<void> sendDataToFirebase(
     BuildContext context,
     String name,
     String email,
     String upiID,
     File? profilePic,
   ) {
-    authRepository.saveDataToFirebase(
+    return authRepository.saveDataToFirebase(
       name: name,
       email: email,
       upiID: upiID,
