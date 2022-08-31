@@ -3,6 +3,10 @@ import 'dart:io';
 import 'package:bigbucks/colors.dart';
 import 'package:bigbucks/common/utils/utils.dart';
 import 'package:bigbucks/features/auth/provider/auth_controller.dart';
+import 'package:bigbucks/models/person.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -20,6 +24,25 @@ class _UserInformationState extends ConsumerState<UserInformation> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController upiController = TextEditingController();
   File? image;
+
+  Person? person;
+  void getPerson() async {
+    Person? p = await ref.read(authControllerProvider).getUserData();
+    setState(() {
+      person = p;
+    });
+    if (person != null) {
+      emailController.text = person!.email!;
+      nameController.text = person!.name;
+      upiController.text = person!.upiID!;
+    }
+  }
+
+  @override
+  void initState() {
+    getPerson();
+    super.initState();
+  }
 
   @override
   void dispose() {

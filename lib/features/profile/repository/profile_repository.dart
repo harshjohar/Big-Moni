@@ -56,6 +56,10 @@ class ProfileRepository {
       );
     }
 
+    transactions.sort((b, a) {
+      return (a.timestamp.compareTo(b.timestamp));
+    });
+
     return transactions;
   }
 }

@@ -49,7 +49,7 @@ class _TransactionListState extends ConsumerState<TransactionList> {
                         style: TextStyle(fontSize: 20),
                       ),
                       Text(
-                        total.ceil().toString(),
+                        total.ceil().abs().toString(),
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
