@@ -24,6 +24,10 @@ class HomeController {
     );
   }
 
+  Future<void> paidBack(BuildContext context, String uid, double price) {
+    return homeRespository.paidBack(context, uid, price);
+  }
+
   Future<List<TransactionViewModel>?> getCreditors() async {
     List<TransactionViewModel>? creditors =
         await homeRespository.getCreditors();

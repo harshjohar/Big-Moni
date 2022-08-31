@@ -23,6 +23,62 @@ class HomeRespository {
   List<TransactionViewModel> creditors = [];
   HomeRespository(this.auth, this.firestore);
 
+  Future<void> paidBack(
+      BuildContext context, String otherUserUid, double price) async {
+    final uid = auth.currentUser!.uid;
+    try {
+      var transaction = TransactionModel(
+        debtorId: uid,
+        creditorId: otherUserUid,
+        description: "Paid Back",
+        money: price,
+        timestamp: Timestamp.now(),
+      );
+
+      final addedTransaction =
+          await firestore.collection("transaction").add(transaction.toMap());
+
+      await firestore.collection("userTransactions").doc(uid).set(
+        {
+          'transactions': FieldValue.arrayUnion(
+            [addedTransaction.id],
+          ),
+        },
+        SetOptions(
+          merge: true,
+        ),
+      );
+
+      await firestore.collection("userTransactions").doc(otherUserUid).set(
+        {
+          'transactions': FieldValue.arrayUnion(
+            [addedTransaction.id],
+          ),
+        },
+        SetOptions(
+          merge: true,
+        ),
+      );
+
+      final hashedUID = (uid.compareTo(otherUserUid) == -1
+          ? uid + otherUserUid
+          : otherUserUid + uid);
+
+      await firestore.collection('userMappingTransactions').doc(hashedUID).set(
+        {
+          'transactions': FieldValue.arrayUnion(
+            [addedTransaction.id],
+          ),
+        },
+        SetOptions(
+          merge: true,
+        ),
+      );
+    } catch (e) {
+      showSnackBar(context: context, content: e.toString());
+    }
+  }
+
   void addTransactionDebt(BuildContext context, String phoneNumber,
       double price, String description) async {
     final uid = auth.currentUser!.uid;

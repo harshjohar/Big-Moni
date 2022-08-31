@@ -1,5 +1,6 @@
 import 'package:bigbucks/colors.dart';
 import 'package:bigbucks/common/screens/loader.dart';
+import 'package:bigbucks/features/home/controller/home_controller.dart';
 import 'package:bigbucks/features/home/widgets/transactions_list.dart';
 import 'package:bigbucks/features/profile/repository/profile_repository.dart';
 import 'package:bigbucks/models/person.dart';
@@ -17,8 +18,46 @@ class UserScreen extends ConsumerStatefulWidget {
 }
 
 class _UserScreenState extends ConsumerState<UserScreen> {
+  late TextEditingController payBackText;
+
   Future<Person?> getUserInfo(String userUid) async {
     return ref.read(profileRepositoryProvider).getUserDetails(userUid);
+  }
+
+  Future<String?> openDialog() => showDialog<String?>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text("pay back"),
+          content: TextField(
+            autofocus: true,
+            controller: payBackText,
+            decoration: const InputDecoration(
+              hintText: "9999",
+              label: Text("Enter Amount"),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(payBackText.text);
+              },
+              child: const Text("Submit"),
+            )
+          ],
+        ),
+      );
+  void payBack() {}
+
+  @override
+  void initState() {
+    payBackText = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    payBackText.dispose();
+    super.dispose();
   }
 
   @override
@@ -71,10 +110,17 @@ class _UserScreenState extends ConsumerState<UserScreen> {
                               ? Text(userDetails.upiID!)
                               : const Text("No UPI Id"),
                           ElevatedButton(
-                            onPressed: () {
-                              // TODO
+                            onPressed: () async {
+                              final amount = await openDialog();
+                              if (amount != null) {
+                                await ref.read(homeControllerProvider).paidBack(
+                                    context,
+                                    widget.userUid,
+                                    double.parse(amount));
+                              }
+                              setState(() {});
                             },
-                            child: const Text("Poke"),
+                            child: const Text("Paid"),
                           ),
                         ],
                       ),
