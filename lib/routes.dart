@@ -6,6 +6,7 @@ import 'package:bigbucks/features/home/screens/add_debtor.dart';
 import 'package:bigbucks/features/home/screens/contacts_screen.dart';
 import 'package:bigbucks/features/home/screens/notifications_screen.dart';
 import 'package:bigbucks/features/home/screens/user_screen.dart';
+import 'package:bigbucks/features/home/widgets/list_person.dart';
 import 'package:bigbucks/features/profile/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -21,8 +22,11 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (ctx) => const ProfileScreen());
     case (UserScreen.routeName):
       return MaterialPageRoute(builder: (ctx) {
-        final args = settings.arguments as String;
-        return UserScreen(userUid: args);
+        final args = settings.arguments as ListPersonArguments;
+        return UserScreen(
+          userUid: args.uid,
+          userInteraction: args.userInteraction,
+        );
       });
     case (ContactScreen.routeName):
       return MaterialPageRoute(builder: (ctx) => const ContactScreen());

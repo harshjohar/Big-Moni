@@ -4,6 +4,13 @@ import 'package:flutter/material.dart';
 
 enum Type { debt, credit }
 
+class ListPersonArguments {
+  final String uid;
+  final UserInteraction userInteraction;
+
+  ListPersonArguments(this.uid, this.userInteraction);
+}
+
 class ListPerson extends StatelessWidget {
   final String user;
   final String money;
@@ -25,7 +32,12 @@ class ListPerson extends StatelessWidget {
       onTap: () {
         Navigator.of(context).pushNamed(
           UserScreen.routeName,
-          arguments: otherUserId,
+          arguments: ListPersonArguments(
+            otherUserId,
+            type == Type.debt
+                ? UserInteraction.debtor
+                : UserInteraction.creditor,
+          ),
         );
       },
       child: Container(

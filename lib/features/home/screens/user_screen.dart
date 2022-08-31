@@ -7,9 +7,14 @@ import 'package:bigbucks/models/person.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+enum UserInteraction { debtor, creditor }
+
 class UserScreen extends ConsumerStatefulWidget {
   final String userUid;
-  const UserScreen({Key? key, required this.userUid}) : super(key: key);
+  final UserInteraction userInteraction;
+  const UserScreen(
+      {Key? key, required this.userUid, required this.userInteraction})
+      : super(key: key);
 
   static const String routeName = '/user-screen';
 
@@ -46,7 +51,6 @@ class _UserScreenState extends ConsumerState<UserScreen> {
           ],
         ),
       );
-  void payBack() {}
 
   @override
   void initState() {
@@ -109,19 +113,21 @@ class _UserScreenState extends ConsumerState<UserScreen> {
                           userDetails.upiID != null
                               ? Text(userDetails.upiID!)
                               : const Text("No UPI Id"),
-                          ElevatedButton(
-                            onPressed: () async {
-                              final amount = await openDialog();
-                              if (amount != null) {
-                                await ref.read(homeControllerProvider).paidBack(
-                                    context,
-                                    widget.userUid,
-                                    double.parse(amount));
-                              }
-                              setState(() {});
-                            },
-                            child: const Text("Paid"),
-                          ),
+                          if (widget.userInteraction == UserInteraction.debtor)
+                            ElevatedButton(
+                              onPressed: () async {
+                                final amount = await openDialog();
+                                if (amount != null) {
+                                  // ignore: use_build_context_synchronously
+                                  await ref
+                                      .read(homeControllerProvider)
+                                      .paidBack(context, widget.userUid,
+                                          double.parse(amount));
+                                }
+                                setState(() {});
+                              },
+                              child: const Text("Paid"),
+                            ),
                         ],
                       ),
                     ],
