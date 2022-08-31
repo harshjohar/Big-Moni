@@ -20,7 +20,7 @@ class LandingScreen extends StatelessWidget {
           children: [
             const SizedBox(height: 50),
             const Text(
-              'Welcome to Big Moni',
+              'Welcome to Big Bucks',
               style: TextStyle(
                 fontSize: 33,
                 fontWeight: FontWeight.w600,
