@@ -34,6 +34,25 @@ class _CreditorsListState extends ConsumerState<CreditorsList> {
           final List<TransactionViewModel>? data =
               snapshot.data as List<TransactionViewModel>?;
           final total = accumulateHomeTransactions(data);
+          if (total == 0) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    onPressed: dummy,
+                    icon: const Icon(Icons.refresh),
+                    color: Colors.indigo,
+                  ),
+                  Image.network(
+                    'https://img.freepik.com/free-vector/no-data-concept-illustration_114360-536.jpg?w=2000',
+                    height: 300,
+                    width: 300,
+                  ),
+                ],
+              ),
+            );
+          }
           return SingleChildScrollView(
             physics: const ScrollPhysics(),
             child: Column(

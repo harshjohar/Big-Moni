@@ -173,6 +173,9 @@ class HomeRespository {
         debtors.add(t);
       }
     }
+    debtors.sort((a, b) {
+      return a.name.compareTo(b.name);
+    });
     return debtors;
   }
 
@@ -194,6 +197,9 @@ class HomeRespository {
         creditors.add(t);
       }
     }
+    creditors.sort((a, b) {
+      return a.name.compareTo(b.name);
+    });
     return creditors;
   }
 }
