@@ -1,3 +1,4 @@
+import 'package:bigbucks/colors.dart';
 import 'package:flutter/material.dart';
 
 class NotificationScreen extends StatelessWidget {
@@ -8,7 +9,9 @@ class NotificationScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Notifications"),
+        backgroundColor: CustomColors.blackColor,
       ),
+      body: const Center(child: Text("Feature coming soon, Stay tuned.")),
     );
   }
 }
