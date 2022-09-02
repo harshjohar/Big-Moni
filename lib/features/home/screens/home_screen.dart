@@ -1,5 +1,4 @@
 import 'package:bigbucks/colors.dart';
-import 'package:bigbucks/features/home/controller/home_controller.dart';
 import 'package:bigbucks/features/home/screens/add_debtor.dart';
 import 'package:bigbucks/features/home/screens/notifications_screen.dart';
 import 'package:bigbucks/features/home/widgets/creditors_list.dart';
@@ -16,10 +15,6 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  Future<void> getUserTransactions() {
-    return ref.read(homeControllerProvider).getUserTransactions();
-  }
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -60,16 +55,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             },
           ),
         ),
-        body: FutureBuilder(
-          future: getUserTransactions(),
-          builder: (context, snapshot) {
-            return const TabBarView(
-              children: [
-                DebtorsList(),
-                CreditorsList(),
-              ],
-            );
-          },
+        body: const TabBarView(
+          children: [
+            DebtorsList(),
+            CreditorsList(),
+          ],
         ),
         floatingActionButton: FloatingActionButton(
           backgroundColor: CustomColors.blackColor,

@@ -28,18 +28,15 @@ class HomeController {
     return homeRespository.paidBack(context, uid, price);
   }
 
-  Future<List<TransactionViewModel>?> getCreditors() async {
-    List<TransactionViewModel>? creditors =
-        await homeRespository.getCreditors();
-    return creditors;
+  Stream<List<TransactionViewModel>?> getCreditors() {
+    return homeRespository.getCreditors();
   }
 
-  Future<List<TransactionViewModel>?> getDebtors() async {
-    List<TransactionViewModel>? debtors = await homeRespository.getDebtors();
-    return debtors;
+  Stream<List<TransactionViewModel>?> getDebtors() {
+    return homeRespository.getDebtors();
   }
 
-  Future<void> getUserTransactions() async {
-    return await homeRespository.getTransactionsUser();
+  Stream<Map<String, double>> makeTransactionsMap() {
+    return homeRespository.makeTransactionsMap();
   }
 }
