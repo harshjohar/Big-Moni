@@ -13,22 +13,12 @@ class DebtorsList extends ConsumerStatefulWidget {
 }
 
 class _DebtorsListState extends ConsumerState<DebtorsList> {
-  Future<List<TransactionViewModel>?> getDebtors() async {
-    List<TransactionViewModel>? debtors =
-        await ref.read(homeControllerProvider).getDebtors();
-    return debtors;
-  }
-
-  void dummy() {
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: getDebtors(),
+    return StreamBuilder(
+      stream: ref.read(homeControllerProvider).getDebtors(),
       builder: (context, snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         } else {
           final List<TransactionViewModel>? data =
@@ -40,11 +30,6 @@ class _DebtorsListState extends ConsumerState<DebtorsList> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  IconButton(
-                    onPressed: dummy,
-                    icon: const Icon(Icons.refresh),
-                    color: Colors.indigo,
-                  ),
                   Image.network(
                     'https://img.freepik.com/free-vector/no-data-concept-illustration_114360-536.jpg?w=2000',
                     height: 300,
@@ -70,11 +55,6 @@ class _DebtorsListState extends ConsumerState<DebtorsList> {
                     Text(
                       total.toString(),
                       style: const TextStyle(fontSize: 20),
-                    ),
-                    IconButton(
-                      onPressed: dummy,
-                      icon: const Icon(Icons.refresh),
-                      color: Colors.indigo,
                     ),
                   ],
                 ),

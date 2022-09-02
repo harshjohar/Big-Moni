@@ -17,8 +17,6 @@ class HomeRespository {
   final FirebaseAuth auth;
   final FirebaseFirestore firestore;
 
-  List<TransactionViewModel> debtors = [];
-  List<TransactionViewModel> creditors = [];
   Map<String, double> transactionsMap = {};
   HomeRespository(this.auth, this.firestore);
 
@@ -207,60 +205,156 @@ class HomeRespository {
           }
         }
       }
-      print(currStatusAmongUsers);
       transactionsMap = currStatusAmongUsers;
       return currStatusAmongUsers;
     });
   }
 
-  Future<List<TransactionViewModel>?> getDebtors() async {
-    debtors = [];
+  Stream<List<TransactionViewModel>?> getDebtors() {
+    return firestore
+        .collection('userTransactions')
+        .doc(auth.currentUser!.uid)
+        .snapshots()
+        .asyncMap((userTransactions) async {
+      Map<String, double> currStatusAmongUsers = {};
+      // all transactions of the logged in user
+      List<TransactionModel> transactions = [];
+      List<TransactionViewModel> debtors = [];
+      // creditorId == userId => moni++
+      // debtorId == userId => moni--
 
-    for (var key in transactionsMap.keys) {
-      // key = otherUserUid, value = balance(money)
-      final value = transactionsMap[key]!;
-      if (value < 0) {
-        final userDetails =
-            (await firestore.collection('users').doc(key).get()).data();
-        TransactionViewModel t = TransactionViewModel(
-          name: userDetails!['name'],
-          money: (-value).toString(),
-          photoUrl: userDetails['photoUrl'],
-          otherUserUid: key,
-        );
+      if (userTransactions.data() != null) {
+        final transactionsIdList = userTransactions.data()!['transactions'];
 
-        debtors.add(t);
+        for (var transactionId in transactionsIdList) {
+          final transaction = await firestore
+              .collection("transaction")
+              .doc(transactionId as String)
+              .get();
+          final transactionData = transaction.data();
+          transactions.add(
+            TransactionModel.fromMap(
+              transactionData!,
+            ),
+          );
+        }
       }
-    }
-    debtors.sort((a, b) {
-      return a.name.compareTo(b.name);
+      for (var transaction in transactions) {
+        if (transaction.creditorId == auth.currentUser!.uid) {
+          if (currStatusAmongUsers.containsKey(transaction.debtorId) &&
+              currStatusAmongUsers[transaction.debtorId] != null) {
+            double t = currStatusAmongUsers[transaction.debtorId]!;
+            t = t - transaction.money;
+            currStatusAmongUsers[transaction.debtorId] = t;
+          } else {
+            currStatusAmongUsers[transaction.debtorId] = -transaction.money;
+          }
+        } else {
+          if (currStatusAmongUsers.containsKey(transaction.creditorId) &&
+              currStatusAmongUsers[transaction.creditorId] != null) {
+            double t = currStatusAmongUsers[transaction.creditorId]!;
+            t = t + transaction.money;
+            currStatusAmongUsers[transaction.creditorId] = t;
+          } else {
+            currStatusAmongUsers[transaction.creditorId] = transaction.money;
+          }
+        }
+      }
+      transactionsMap = currStatusAmongUsers;
+      for (var key in transactionsMap.keys) {
+        // key = otherUserUid, value = balance(money)
+        final value = transactionsMap[key]!;
+        if (value < 0) {
+          final userDetails =
+              (await firestore.collection('users').doc(key).get()).data();
+          TransactionViewModel t = TransactionViewModel(
+            name: userDetails!['name'],
+            money: (-value).toString(),
+            photoUrl: userDetails['photoUrl'],
+            otherUserUid: key,
+          );
+
+          debtors.add(t);
+        }
+      }
+      debtors.sort((a, b) {
+        return a.name.compareTo(b.name);
+      });
+      return debtors;
     });
-    print(debtors);
-    return debtors;
   }
 
-  Future<List<TransactionViewModel>?> getCreditors() async {
-    creditors = [];
-    Map<String, double> currStatusAmongUsers = {};
-    for (var key in currStatusAmongUsers.keys) {
-      // key = otherUserUid, value = balance(money)
-      final value = currStatusAmongUsers[key]!;
-      if (value > 0) {
-        final userDetails =
-            (await firestore.collection('users').doc(key).get()).data();
-        TransactionViewModel t = TransactionViewModel(
-          name: userDetails!['name'],
-          money: value.toString(),
-          photoUrl: userDetails['photoUrl'],
-          otherUserUid: key,
-        );
+  Stream<List<TransactionViewModel>?> getCreditors() {
+    return firestore
+        .collection('userTransactions')
+        .doc(auth.currentUser!.uid)
+        .snapshots()
+        .asyncMap((userTransactions) async {
+      Map<String, double> currStatusAmongUsers = {};
+      // all transactions of the logged in user
+      List<TransactionModel> transactions = [];
+      // creditorId == userId => moni++
+      // debtorId == userId => moni--
 
-        creditors.add(t);
+      if (userTransactions.data() != null) {
+        final transactionsIdList = userTransactions.data()!['transactions'];
+
+        for (var transactionId in transactionsIdList) {
+          final transaction = await firestore
+              .collection("transaction")
+              .doc(transactionId as String)
+              .get();
+          final transactionData = transaction.data();
+          transactions.add(
+            TransactionModel.fromMap(
+              transactionData!,
+            ),
+          );
+        }
       }
-    }
-    creditors.sort((a, b) {
-      return a.name.compareTo(b.name);
+      for (var transaction in transactions) {
+        if (transaction.creditorId == auth.currentUser!.uid) {
+          if (currStatusAmongUsers.containsKey(transaction.debtorId) &&
+              currStatusAmongUsers[transaction.debtorId] != null) {
+            double t = currStatusAmongUsers[transaction.debtorId]!;
+            t = t - transaction.money;
+            currStatusAmongUsers[transaction.debtorId] = t;
+          } else {
+            currStatusAmongUsers[transaction.debtorId] = -transaction.money;
+          }
+        } else {
+          if (currStatusAmongUsers.containsKey(transaction.creditorId) &&
+              currStatusAmongUsers[transaction.creditorId] != null) {
+            double t = currStatusAmongUsers[transaction.creditorId]!;
+            t = t + transaction.money;
+            currStatusAmongUsers[transaction.creditorId] = t;
+          } else {
+            currStatusAmongUsers[transaction.creditorId] = transaction.money;
+          }
+        }
+      }
+      List<TransactionViewModel> creditors = [];
+      transactionsMap = currStatusAmongUsers;
+      for (var key in transactionsMap.keys) {
+        // key = otherUserUid, value = balance(money)
+        final value = transactionsMap[key]!;
+        if (value > 0) {
+          final userDetails =
+              (await firestore.collection('users').doc(key).get()).data();
+          TransactionViewModel t = TransactionViewModel(
+            name: userDetails!['name'],
+            money: value.toString(),
+            photoUrl: userDetails['photoUrl'],
+            otherUserUid: key,
+          );
+
+          creditors.add(t);
+        }
+      }
+      creditors.sort((a, b) {
+        return a.name.compareTo(b.name);
+      });
+      return creditors;
     });
-    return creditors;
   }
 }
