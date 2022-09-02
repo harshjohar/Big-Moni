@@ -16,18 +16,14 @@ class TransactionList extends ConsumerStatefulWidget {
 class _TransactionListState extends ConsumerState<TransactionList> {
   final double total = 890;
 
-  Future<List<TransactionModel>?> getTransactions() async {
-    return ref
-        .read(profileRepositoryProvider)
-        .getUserSpecificTransactions(widget.uid);
-  }
-
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: getTransactions(),
+    return StreamBuilder(
+      stream: ref
+          .read(profileRepositoryProvider)
+          .getUserSpecificTransactions(widget.uid),
       builder: (context, snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         } else {
           final List<TransactionModel>? data =

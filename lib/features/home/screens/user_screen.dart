@@ -24,7 +24,7 @@ class UserScreen extends ConsumerStatefulWidget {
 
 class _UserScreenState extends ConsumerState<UserScreen> {
   late TextEditingController payBackText;
-
+  bool loader = false;
   Future<Person?> getUserInfo(String userUid) async {
     return ref.read(profileRepositoryProvider).getUserDetails(userUid);
   }
@@ -37,7 +37,7 @@ class _UserScreenState extends ConsumerState<UserScreen> {
             autofocus: true,
             controller: payBackText,
             decoration: const InputDecoration(
-              hintText: "9999",
+              hintText: "199",
               label: Text("Enter Amount"),
             ),
           ),
@@ -116,6 +116,7 @@ class _UserScreenState extends ConsumerState<UserScreen> {
                           if (widget.userInteraction == UserInteraction.debtor)
                             ElevatedButton(
                               onPressed: () async {
+                                loader = true;
                                 final amount = await openDialog();
                                 if (amount != null) {
                                   // ignore: use_build_context_synchronously
@@ -124,9 +125,11 @@ class _UserScreenState extends ConsumerState<UserScreen> {
                                       .paidBack(context, widget.userUid,
                                           double.parse(amount));
                                 }
-                                setState(() {});
+                                loader = false;
                               },
-                              child: const Text("Paid"),
+                              child: loader
+                                  ? const CircularProgressIndicator()
+                                  : const Text("Paid"),
                             ),
                         ],
                       ),
