@@ -30,38 +30,37 @@ class ProfileRepository {
     return Person.fromMap(userDetails.data()!);
   }
 
-  Future<List<TransactionModel>?> getUserSpecificTransactions(
-      String uid) async {
+  Stream<List<TransactionModel>?> getUserSpecificTransactions(String uid) {
     final hashedUID = (auth.currentUser!.uid.compareTo(uid) == -1
         ? auth.currentUser!.uid + uid
         : uid + auth.currentUser!.uid);
 
-    final transactionsIdDoc = (await firestore
-            .collection('userMappingTransactions')
-            .doc(hashedUID)
-            .get())
-        .data();
+    return firestore
+        .collection('userMappingTransactions')
+        .doc(hashedUID)
+        .snapshots()
+        .asyncMap((transactionsIdDoc) async {
+      final transactionIdList = transactionsIdDoc['transactions'];
+      List<TransactionModel> transactions = [];
+      for (var transactionId in transactionIdList) {
+        final transaction = await firestore
+            .collection("transaction")
+            .doc(transactionId as String)
+            .get();
+        final transactionData = transaction.data();
+        transactions.add(
+          TransactionModel.fromMap(
+            transactionData!,
+          ),
+        );
+      }
 
-    final transactionIdList = transactionsIdDoc!['transactions'];
-    List<TransactionModel> transactions = [];
-    for (var transactionId in transactionIdList) {
-      final transaction = await firestore
-          .collection("transaction")
-          .doc(transactionId as String)
-          .get();
-      final transactionData = transaction.data();
-      transactions.add(
-        TransactionModel.fromMap(
-          transactionData!,
-        ),
-      );
-    }
+      transactions.sort((b, a) {
+        return (a.timestamp.compareTo(b.timestamp));
+      });
 
-    transactions.sort((b, a) {
-      return (a.timestamp.compareTo(b.timestamp));
+      return transactions;
     });
-
-    return transactions;
   }
 
   Future<List<TransactionViewModel>?> getUserTransactions() async {
