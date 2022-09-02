@@ -39,7 +39,7 @@ class HomeController {
     return debtors;
   }
 
-  Future<void> getUserTransactions() async {
-    return await homeRespository.getTransactionsUser();
+  Stream<Map<String, double>> makeTransactionsMap() {
+    return homeRespository.makeTransactionsMap();
   }
 }
