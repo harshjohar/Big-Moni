@@ -1,5 +1,4 @@
 import 'package:bigbucks/colors.dart';
-import 'package:bigbucks/features/home/screens/user_screen.dart';
 import 'package:flutter/material.dart';
 
 enum Type { debt, credit }

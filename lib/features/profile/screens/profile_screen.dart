@@ -1,6 +1,5 @@
 import 'package:bigbucks/colors.dart';
 import 'package:bigbucks/common/screens/loader.dart';
-import 'package:bigbucks/features/home/widgets/transactions_list.dart';
 import 'package:bigbucks/features/landing/landing_screen.dart';
 import 'package:bigbucks/features/profile/repository/profile_repository.dart';
 import 'package:bigbucks/features/profile/widgets/user_transactions_list.dart';
