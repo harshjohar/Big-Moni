@@ -35,8 +35,4 @@ class HomeController {
   Stream<List<TransactionViewModel>?> getDebtors() {
     return homeRespository.getDebtors();
   }
-
-  Stream<Map<String, double>> makeTransactionsMap() {
-    return homeRespository.makeTransactionsMap();
-  }
 }
