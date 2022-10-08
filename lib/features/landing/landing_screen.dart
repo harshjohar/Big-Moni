@@ -48,7 +48,7 @@ class LandingScreen extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () => navigateToLoginScreen(context),
                 style: ElevatedButton.styleFrom(
-                  primary: CustomColors.whiteColor,
+                  backgroundColor: CustomColors.whiteColor,
                 ),
                 child: const Text(
                   'AGREE AND CONTINUE',

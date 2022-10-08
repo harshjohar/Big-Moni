@@ -1,6 +1,7 @@
 import 'package:bigbucks/colors.dart';
 import 'package:bigbucks/common/screens/loader.dart';
 import 'package:bigbucks/features/home/controller/home_controller.dart';
+import 'package:bigbucks/features/home/screens/add_user_transaction.dart';
 import 'package:bigbucks/features/home/widgets/transactions_list.dart';
 import 'package:bigbucks/features/profile/repository/profile_repository.dart';
 import 'package:bigbucks/models/person.dart';
@@ -78,6 +79,13 @@ class _UserScreenState extends ConsumerState<UserScreen> {
             title: Text(userDetails.name),
             backgroundColor: CustomColors.blackColor,
           ),
+          floatingActionButton: FloatingActionButton(
+          backgroundColor: CustomColors.blackColor,
+          onPressed: () {
+            Navigator.of(context).pushNamed(AddUserTransactions.routeName, arguments: {'phoneNumber': userDetails.phoneNumber, 'name': userDetails.name,},);
+          },
+          child: const Icon(Icons.add),
+        ),
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.symmetric(

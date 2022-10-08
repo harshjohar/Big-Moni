@@ -78,7 +78,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 child: ElevatedButton(
                   onPressed: sendPhoneNumber,
                   style: ElevatedButton.styleFrom(
-                    primary: CustomColors.blackColor,
+                    backgroundColor: CustomColors.blackColor,
                   ),
                   child: const Text(
                     "NEXT",
