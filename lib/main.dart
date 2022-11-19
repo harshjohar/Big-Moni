@@ -1,8 +1,4 @@
-import 'package:bigbucks/common/screens/error_screen.dart';
 import 'package:bigbucks/common/screens/loader.dart';
-import 'package:bigbucks/features/auth/provider/auth_controller.dart';
-import 'package:bigbucks/features/home/screens/home_screen.dart';
-import 'package:bigbucks/features/landing/landing_screen.dart';
 import 'package:bigbucks/firebase_options.dart';
 import 'package:bigbucks/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -42,16 +38,7 @@ class _MyAppState extends ConsumerState<MyApp> {
           secondary: Colors.amber,
         ),
       ),
-      home: ref.watch(userdataAuthProvider).when(data: (user) {
-        if (user == null) return const LandingScreen();
-        return const HomeScreen();
-      }, error: (error, trace) {
-        return ErrorScreen(
-          error: error.toString(),
-        );
-      }, loading: () {
-        return const Loader();
-      }),
+      home: const Loader(),
       onGenerateRoute: (settings) => generateRoute(settings),
     );
   }
