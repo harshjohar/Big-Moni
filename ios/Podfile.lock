@@ -835,7 +835,7 @@ SPEC CHECKSUMS:
   FirebaseFirestore: 945196dd78f4e92de6fc47b38569a1e7088af81f
   FirebaseStorage: 160ba975dd3452d9c59a3bf5ea9bf70ff96bd3c2
   FirebaseStorageInternal: 4f8a9e27391a99ac0692adbbd072fe0e5c4125fe
-  Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
+  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   GoogleDataTransport: 1c8145da7117bd68bbbed00cf304edb6a24de00f
   GoogleUtilities: e0913149f6b0625b553d70dae12b49fc62914fd1
   "gRPC-C++": 9675f953ace2b3de7c506039d77be1f2e77a8db2
