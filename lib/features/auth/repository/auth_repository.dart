@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:bigbucks/common/repository/common_firebase_storage_repository.dart';
-import 'package:bigbucks/common/screens/loader.dart';
 import 'package:bigbucks/common/utils/utils.dart';
 import 'package:bigbucks/features/auth/screens/otp_screen.dart';
 import 'package:bigbucks/features/auth/screens/user_information_screen.dart';
+import 'package:bigbucks/home/home_screen.dart';
 import 'package:bigbucks/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -99,7 +99,7 @@ class AuthRepository {
 // ignore: use_build_context_synchronously
       Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => const Loader()),
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
           (route) => false);
     } catch (e) {
       showSnackBar(context: context, content: e.toString());
