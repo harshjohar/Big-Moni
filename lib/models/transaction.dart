@@ -1,6 +1,6 @@
 import 'package:bigbucks/enums/transaction_enum.dart';
 
-class Transaction {
+class TransactionModel {
   final String senderId;
   final String recieverId;
   final double amount;
@@ -8,7 +8,7 @@ class Transaction {
   final TransactionEnum transactionType;
   final DateTime timestamp;
 
-  Transaction({
+  TransactionModel({
     required this.senderId,
     required this.recieverId,
     required this.amount,
@@ -23,13 +23,13 @@ class Transaction {
       "recieverId": recieverId,
       "amount": amount,
       "description": description,
-      "transactionType": transactionType,
+      "transactionType": transactionType.type,
       "timestamp": timestamp.toIso8601String(),
     };
   }
 
-  factory Transaction.fromJson(Map<String, dynamic> json) {
-    return Transaction(
+  factory TransactionModel.fromJson(Map<String, dynamic> json) {
+    return TransactionModel(
       senderId: json["senderId"],
       recieverId: json["recieverId"],
       amount: double.parse(json["amount"]),

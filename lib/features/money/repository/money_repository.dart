@@ -1,5 +1,7 @@
 import 'package:bigbucks/common/utils/utils.dart';
+import 'package:bigbucks/enums/transaction_enum.dart';
 import 'package:bigbucks/models/interaction.dart';
+import 'package:bigbucks/models/transaction.dart';
 import 'package:bigbucks/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -31,7 +33,6 @@ class MoneyRepository {
     required double amount,
     required UserModel sender,
   }) async {
-    // TODO
     Interaction interaction = Interaction(
       name: name,
       photoUrl: photoUrl,
@@ -68,8 +69,43 @@ class MoneyRepository {
     }, SetOptions(merge: true));
   }
 
-  void _saveToTransactionSubCollection() {
-    // TODO
+  void _saveToTransactionSubCollection({
+    required String userId,
+    required String description,
+    required double amount,
+    required TransactionEnum type,
+    required String transactionId,
+  }) async {
+    TransactionModel transaction = TransactionModel(
+      senderId: auth.currentUser!.uid,
+      recieverId: userId,
+      amount: amount,
+      description: description,
+      transactionType: type,
+      timestamp: DateTime.now(),
+    );
+
+    await firestore
+        .collection('users')
+        .doc(auth.currentUser!.uid)
+        .collection('interactions')
+        .doc(userId)
+        .collection('transactions')
+        .doc(transactionId)
+        .set(
+          transaction.toJson(),
+        );
+
+    await firestore
+        .collection('users')
+        .doc(userId)
+        .collection('interactions')
+        .doc(auth.currentUser!.uid)
+        .collection('transactions')
+        .doc(transactionId)
+        .set(
+          transaction.toJson(),
+        );
   }
 
   Future<void> addTransaction({
@@ -87,15 +123,25 @@ class MoneyRepository {
       // var userDataMap = await firestore.collection('users').doc(userId).get();
       // reciever = UserModel.fromJson(userDataMap.data()!);
       _saveToInteractionSubCollection(
-          name: userName,
-          photoUrl: photoUrl,
-          timestamp: timestamp,
-          userId: userId,
-          description: description,
-          amount: amount,
-          sender: sender);
+        name: userName,
+        photoUrl: photoUrl,
+        timestamp: timestamp,
+        userId: userId,
+        description: description,
+        amount: amount,
+        sender: sender,
+      );
 
       var transactionId = const Uuid().v1();
+
+      _saveToTransactionSubCollection(
+        userId: userId,
+        description: description,
+        amount: amount,
+        type: TransactionEnum.credit,
+        transactionId: transactionId,
+      );
+      showSnackBar(context: context, content: "done");
     } catch (e) {
       showSnackBar(
         context: context,

@@ -18,10 +18,10 @@ class HomeScreen extends ConsumerWidget {
           ref.read(moneyControllerProvider).addTransaction(
                 context: context,
                 userId: 'Q33too2fAyOai3w6ztyU8CffQst2',
-                userName: 'hih',
+                userName: 'hihi',
                 photoUrl: '',
                 amount: 1500,
-                description: 'no',
+                description: 'peg',
               );
         },
         child: const Icon(Icons.add),
