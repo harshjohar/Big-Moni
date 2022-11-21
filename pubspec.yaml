@@ -23,6 +23,7 @@ dependencies:
   enough_giphy_flutter: ^0.3.0
   intl: ^0.17.0
   country_picker: ^2.0.16
+  uuid: ^3.0.7
   
 dev_dependencies:
   flutter_test:
