@@ -9,6 +9,9 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Welcome back bitch!"),
       ),
+      body: const Center(
+        child: Text("I am working on this"),
+      ),
     );
   }
 }

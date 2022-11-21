@@ -16,19 +16,19 @@ void main() async {
   );
   runApp(
     const ProviderScope(
-      child: MyApp(),
+      child: BigBucks(),
     ),
   );
 }
 
-class MyApp extends ConsumerStatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+class BigBucks extends ConsumerStatefulWidget {
+  const BigBucks({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<MyApp> createState() => _MyAppState();
+  ConsumerState<BigBucks> createState() => _MyAppState();
 }
 
-class _MyAppState extends ConsumerState<MyApp> {
+class _MyAppState extends ConsumerState<BigBucks> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
