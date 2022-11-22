@@ -10,7 +10,7 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Welcome back bitch!"),
+        title: const Text("Welcome back!"),
       ),
       body: const InteractionsList(),
       floatingActionButton: FloatingActionButton(
@@ -20,11 +20,13 @@ class HomeScreen extends ConsumerWidget {
                 userId: 'L6Jw4G8bBBW0CrifhHf98iwuByf1',
                 userName: 'Manjit',
                 photoUrl: '',
-                amount: 1500,
+                amount: -1500,
                 description: 'peg',
               );
         },
-        child: const Icon(Icons.add),
+        child: const Icon(
+          Icons.add,
+        ),
       ),
     );
   }

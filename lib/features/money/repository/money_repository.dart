@@ -141,7 +141,7 @@ class MoneyRepository {
         type: TransactionEnum.credit,
         transactionId: transactionId,
       );
-      showSnackBar(context: context, content: "done");
+      showSnackBar(context: context, content: "Added");
     } catch (e) {
       showSnackBar(
         context: context,

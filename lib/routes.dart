@@ -21,9 +21,11 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (ctx) => const SelectContactScreen());
     case (DetailsScreen.routeName):
       return MaterialPageRoute(builder: (ctx) {
-        final userId = settings.arguments as String;
+        final userData = settings.arguments as Map<String, dynamic>;
         return DetailsScreen(
-          userId: userId,
+          userId: userData['userId'],
+          name: userData['name'],
+          photoUrl: userData['photoUrl'],
         );
       });
     default:

@@ -19,7 +19,9 @@ class InteractionsList extends ConsumerWidget {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Loader();
           }
-
+          if (snapshot.data == null) {
+            return const Center(child: Text("No interactions"));
+          }
           return ListView.builder(
               shrinkWrap: true,
               itemCount: snapshot.data!.length,
@@ -31,7 +33,11 @@ class InteractionsList extends ConsumerWidget {
                       onTap: () {
                         Navigator.of(context).pushNamed(
                           DetailsScreen.routeName,
-                          arguments: interactionData.userId,
+                          arguments: {
+                            'userId': interactionData.userId,
+                            'name': interactionData.name,
+                            'photoUrl': interactionData.photoUrl,
+                          },
                         );
                       },
                       child: Padding(
@@ -58,12 +64,36 @@ class InteractionsList extends ConsumerWidget {
                             ),
                             radius: 30,
                           ),
-                          trailing: Text(
-                            DateFormat.Hm().format(interactionData.timestamp),
-                            style: const TextStyle(
-                              color: Colors.grey,
-                              fontSize: 13,
-                            ),
+                          trailing: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              interactionData.balance >= 0
+                                  ? Text(
+                                      interactionData.balance.ceil().toString(),
+                                      style: TextStyle(
+                                        color: interactionData.balance > 0 ?  Colors.green : Colors.indigo,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                      ),
+                                    )
+                                  : Text(
+                                      (-interactionData.balance).ceil().toString(),
+                                      style: const TextStyle(
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                              Text(
+                                DateFormat.Hm()
+                                    .format(interactionData.timestamp),
+                                style: const TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 13,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
