@@ -1,5 +1,6 @@
 import 'package:bigbucks/common/screens/loader.dart';
 import 'package:bigbucks/features/money/controller/money_controller.dart';
+import 'package:bigbucks/features/money/screens/details_screen.dart';
 import 'package:bigbucks/models/interaction.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -28,7 +29,10 @@ class InteractionsList extends ConsumerWidget {
                   children: [
                     InkWell(
                       onTap: () {
-
+                        Navigator.of(context).pushNamed(
+                          DetailsScreen.routeName,
+                          arguments: interactionData.userId,
+                        );
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),

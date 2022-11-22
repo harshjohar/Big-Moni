@@ -17,8 +17,8 @@ class HomeScreen extends ConsumerWidget {
         onPressed: () {
           ref.read(moneyControllerProvider).addTransaction(
                 context: context,
-                userId: 'Q33too2fAyOai3w6ztyU8CffQst2',
-                userName: 'hihi',
+                userId: 'L6Jw4G8bBBW0CrifhHf98iwuByf1',
+                userName: 'Manjit',
                 photoUrl: '',
                 amount: 1500,
                 description: 'peg',

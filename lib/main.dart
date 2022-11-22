@@ -25,10 +25,10 @@ class BigBucks extends ConsumerStatefulWidget {
   const BigBucks({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<BigBucks> createState() => _MyAppState();
+  ConsumerState<BigBucks> createState() => _BigBucksState();
 }
 
-class _MyAppState extends ConsumerState<BigBucks> {
+class _BigBucksState extends ConsumerState<BigBucks> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
