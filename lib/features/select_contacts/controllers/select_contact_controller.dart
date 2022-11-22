@@ -16,6 +16,4 @@ class SelectContactController {
   final SelectContactRepository selectContactRepository;
 
   SelectContactController(this.ref, this.selectContactRepository);
-
-
 }

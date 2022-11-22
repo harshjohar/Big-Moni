@@ -1,5 +1,5 @@
 import 'package:bigbucks/features/money/controller/money_controller.dart';
-import 'package:bigbucks/features/money/widgets/InteractionsList.dart';
+import 'package:bigbucks/features/money/widgets/interactions_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

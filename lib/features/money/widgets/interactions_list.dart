@@ -72,13 +72,17 @@ class InteractionsList extends ConsumerWidget {
                                   ? Text(
                                       interactionData.balance.ceil().toString(),
                                       style: TextStyle(
-                                        color: interactionData.balance > 0 ?  Colors.green : Colors.indigo,
+                                        color: interactionData.balance > 0
+                                            ? Colors.green
+                                            : Colors.indigo,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18,
                                       ),
                                     )
                                   : Text(
-                                      (-interactionData.balance).ceil().toString(),
+                                      (-interactionData.balance)
+                                          .ceil()
+                                          .toString(),
                                       style: const TextStyle(
                                         color: Colors.red,
                                         fontWeight: FontWeight.bold,

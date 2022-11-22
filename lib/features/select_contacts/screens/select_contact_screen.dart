@@ -1,4 +1,3 @@
-
 import 'package:bigbucks/features/select_contacts/controllers/select_contact_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
@@ -26,31 +25,31 @@ class SelectContactScreen extends ConsumerWidget {
       ),
       body: ref.watch(getContactsProvider).when(
           data: (contactList) => ListView.builder(
-            itemBuilder: (context, index) {
-              final contact = contactList[index];
-              return InkWell(
-                onTap: () {
-                  selectContact(ref, contact, context);
-                },
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: ListTile(
-                    title: Text(contact.displayName),
-                    leading: contact.photo == null
-                        ? const CircleAvatar(
-                      backgroundColor: Colors.pink,
-                      radius: 30,
-                    )
-                        : CircleAvatar(
-                      backgroundImage: MemoryImage(contact.photo!),
-                      radius: 30,
+                itemBuilder: (context, index) {
+                  final contact = contactList[index];
+                  return InkWell(
+                    onTap: () {
+                      selectContact(ref, contact, context);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: ListTile(
+                        title: Text(contact.displayName),
+                        leading: contact.photo == null
+                            ? const CircleAvatar(
+                                backgroundColor: Colors.pink,
+                                radius: 30,
+                              )
+                            : CircleAvatar(
+                                backgroundImage: MemoryImage(contact.photo!),
+                                radius: 30,
+                              ),
+                      ),
                     ),
-                  ),
-                ),
-              );
-            },
-            itemCount: contactList.length,
-          ),
+                  );
+                },
+                itemCount: contactList.length,
+              ),
           error: (error, trace) {
             return Scaffold(
               body: Center(

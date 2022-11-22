@@ -15,10 +15,10 @@ class OTPScreen extends ConsumerStatefulWidget {
 class _OTPScreenState extends ConsumerState<OTPScreen> {
   void verifyOtp(WidgetRef ref, BuildContext context, String userOTP) {
     ref.read(authControllerProvider).verifyOTP(
-      context,
-      widget.verificationId,
-      userOTP,
-    );
+          context,
+          widget.verificationId,
+          userOTP,
+        );
   }
 
   @override

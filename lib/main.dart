@@ -42,19 +42,16 @@ class _BigBucksState extends ConsumerState<BigBucks> {
           secondary: Colors.amber,
         ),
       ),
-      home: ref.watch(userProvider).when(
-          data: (user) {
-            if (user == null) return const LoginScreen();
-            return const HomeScreen();
-          },
-          error: (error, trace) {
-            return ErrorScreen(
-              error: error.toString(),
-            );
-          },
-          loading: () {
-            return const Loader();
-          }),
+      home: ref.watch(userProvider).when(data: (user) {
+        if (user == null) return const LoginScreen();
+        return const HomeScreen();
+      }, error: (error, trace) {
+        return ErrorScreen(
+          error: error.toString(),
+        );
+      }, loading: () {
+        return const Loader();
+      }),
       onGenerateRoute: (settings) => generateRoute(settings),
     );
   }

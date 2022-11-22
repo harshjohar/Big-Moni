@@ -4,7 +4,7 @@ import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final selectContactsRepositoryProvider = Provider(
-      (ref) => SelectContactRepository(firestore: FirebaseFirestore.instance),
+  (ref) => SelectContactRepository(firestore: FirebaseFirestore.instance),
 );
 
 class SelectContactRepository {
