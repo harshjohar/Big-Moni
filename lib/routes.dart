@@ -4,6 +4,7 @@ import 'package:bigbucks/features/auth/screens/otp_screen.dart';
 import 'package:bigbucks/features/auth/screens/user_information_screen.dart';
 import 'package:bigbucks/features/money/screens/details_screen.dart';
 import 'package:bigbucks/features/select_contacts/screens/select_contact_screen.dart';
+import 'package:bigbucks/home/home_screen.dart';
 import 'package:flutter/material.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
@@ -27,6 +28,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
           name: userData['name'],
           photoUrl: userData['photoUrl'],
         );
+      });
+    case (HomeScreen.routeName):
+      return MaterialPageRoute(builder: (ctx) {
+        return const HomeScreen();
       });
     default:
       return MaterialPageRoute(
