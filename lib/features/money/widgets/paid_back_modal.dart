@@ -35,7 +35,7 @@ class _PaidBackModalState extends ConsumerState<PaidBackModal> {
       return;
     }
 
-    if (double.parse(amountController.text.trim()) < 0) {
+    if (double.parse(amountController.text.trim()) <= 0) {
       showSnackBar(context: context, content: "Please enter a valid amount.");
       return;
     }
@@ -52,19 +52,30 @@ class _PaidBackModalState extends ConsumerState<PaidBackModal> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.fromLTRB(
+        20,
+        20,
+        20,
+        MediaQuery.of(context).viewInsets.bottom + 10,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              "Pay Back by ${widget.name}",
+              "Paid Back by ${widget.name}",
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
           TextField(
             controller: amountController,
+            autofocus: true,
+            onSubmitted: (_) => _addTransaction(),
+            keyboardType: const TextInputType.numberWithOptions(
+              decimal: true,
+            ),
             decoration: const InputDecoration(
               hintText: "Amount",
             ),

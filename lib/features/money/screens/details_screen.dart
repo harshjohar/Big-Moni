@@ -79,8 +79,8 @@ class DetailsScreen extends ConsumerWidget {
                             )
                           : Text(
                               (-balance).ceil().toString(),
-                              style: const TextStyle(
-                                color: Colors.red,
+                              style: TextStyle(
+                                color: Colors.red[400],
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
                               ),
@@ -104,6 +104,7 @@ class DetailsScreen extends ConsumerWidget {
                   onPressed: () {
                     showModalBottomSheet(
                         context: context,
+                        isScrollControlled: true,
                         builder: (ctx) {
                           return AddMoreModal(
                             userId: userId,
@@ -125,6 +126,7 @@ class DetailsScreen extends ConsumerWidget {
                   onPressed: () {
                     showModalBottomSheet(
                         context: context,
+                        isScrollControlled: true,
                         builder: (ctx) {
                           return PaidBackModal(
                             userId: userId,
