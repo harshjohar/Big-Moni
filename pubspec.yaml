@@ -2,7 +2,7 @@ name: bigbucks
 description: A way to get track of money lent and borrowed.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.1+2
+version: 1.1.0+3
 
 environment:
   sdk: ">=2.17.6 <3.0.0"
