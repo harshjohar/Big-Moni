@@ -30,10 +30,10 @@ class TransactionModel {
 
   factory TransactionModel.fromJson(Map<String, dynamic> json) {
     return TransactionModel(
-      senderId: json["senderId"],
-      recieverId: json["recieverId"],
-      amount: double.parse(json["amount"]),
-      description: json["description"],
+      senderId: json["senderId"] ?? '',
+      recieverId: json["recieverId"] ?? '',
+      amount: json["amount"],
+      description: json["description"] ?? '',
       transactionType: (json["transactionType"] as String).toEnum(),
       timestamp: DateTime.parse(json["timestamp"]),
     );

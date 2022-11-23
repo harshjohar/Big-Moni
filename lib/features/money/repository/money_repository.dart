@@ -169,4 +169,26 @@ class MoneyRepository {
       return interactions;
     });
   }
+
+  Stream<List<TransactionModel>> getTransactions(String userId) {
+    return firestore
+        .collection('users')
+        .doc(auth.currentUser!.uid)
+        .collection('interactions')
+        .doc(userId)
+        .collection('transactions')
+        .orderBy('timestamp')
+        .snapshots()
+        .asyncMap(
+      (event) {
+        List<TransactionModel> transactions = [];
+        for (var document in event.docs) {
+          TransactionModel transaction =
+              TransactionModel.fromJson(document.data());
+          transactions.add(transaction);
+        }
+        return transactions;
+      },
+    );
+  }
 }

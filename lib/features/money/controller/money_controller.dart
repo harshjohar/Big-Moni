@@ -1,6 +1,7 @@
 import 'package:bigbucks/features/auth/controllers/auth_controller.dart';
 import 'package:bigbucks/features/money/repository/money_repository.dart';
 import 'package:bigbucks/models/interaction.dart';
+import 'package:bigbucks/models/transaction.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -38,5 +39,9 @@ class MoneyController {
 
   Stream<List<Interaction>> getInteractions() {
     return moneyRepository.getInteractions();
+  }
+
+  Stream<List<TransactionModel>> getTransactions(String userId) {
+    return moneyRepository.getTransactions(userId);
   }
 }
