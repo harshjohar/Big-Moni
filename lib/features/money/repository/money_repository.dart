@@ -219,7 +219,7 @@ class MoneyRepository {
         .doc(userId)
         .snapshots()
         .asyncMap((event) {
-        Interaction interaction = Interaction.fromJson(event.data()!);
+      Interaction interaction = Interaction.fromJson(event.data()!);
       return interaction;
     });
   }

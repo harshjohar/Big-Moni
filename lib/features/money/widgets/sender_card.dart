@@ -80,7 +80,9 @@ class SenderCard extends StatelessWidget {
                   child: Text(
                     DateFormat.yMd().format(timestamp),
                     style: TextStyle(
-                      color: type == TransactionEnum.credit ? Colors.white54 : Colors.indigo,
+                      color: type == TransactionEnum.credit
+                          ? Colors.white54
+                          : Colors.indigo,
                     ),
                   ),
                 )

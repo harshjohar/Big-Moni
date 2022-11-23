@@ -39,7 +39,14 @@ class DetailsScreen extends ConsumerWidget {
             const SizedBox(
               width: 10,
             ),
-            Text(name),
+            FittedBox(
+              clipBehavior: Clip.hardEdge,
+              fit: BoxFit.fitWidth,
+              child: Text(
+                name,
+                style: const TextStyle(fontSize: 16),
+              ),
+            ),
           ],
         ),
         actions: [
@@ -47,10 +54,13 @@ class DetailsScreen extends ConsumerWidget {
               stream: ref.read(moneyControllerProvider).getInteraction(userId),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Align(
+                  return Align(
                     alignment: Alignment.center,
-                    child: CircularProgressIndicator(),
+                    child: Container(),
                   );
+                }
+                if (snapshot.data == null) {
+                  return Container();
                 }
                 final balance = snapshot.data!.balance;
                 return Align(

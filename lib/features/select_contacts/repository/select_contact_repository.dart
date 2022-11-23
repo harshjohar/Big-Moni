@@ -38,6 +38,12 @@ class SelectContactRepository {
           '',
         );
         selectedPhoneNum = selectedPhoneNum.replaceAll('-', '');
+        selectedPhoneNum = selectedPhoneNum.replaceAll('(', '');
+        selectedPhoneNum = selectedPhoneNum.replaceAll(')', '');
+
+        if (selectedPhoneNum[0] != '+') {
+          selectedPhoneNum = '+91$selectedPhoneNum';
+        }
         if (selectedPhoneNum == userData.phoneNumber) {
           isFound = true;
           // ignore: use_build_context_synchronously

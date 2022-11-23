@@ -40,12 +40,12 @@ class _PaidBackModalState extends ConsumerState<PaidBackModal> {
       return;
     }
     ref.read(moneyControllerProvider).payBackTransaction(
-      context: context,
-      userId: widget.userId,
-      userName: widget.name,
-      photoUrl: widget.photoUrl,
-      amount: double.parse(amountController.text.trim()),
-    );
+          context: context,
+          userId: widget.userId,
+          userName: widget.name,
+          photoUrl: widget.photoUrl,
+          amount: double.parse(amountController.text.trim()),
+        );
     Navigator.pop(context);
   }
 
@@ -60,10 +60,7 @@ class _PaidBackModalState extends ConsumerState<PaidBackModal> {
             alignment: Alignment.centerLeft,
             child: Text(
               "Pay Back by ${widget.name}",
-              style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold
-              ),
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
           TextField(

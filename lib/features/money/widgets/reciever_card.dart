@@ -30,7 +30,7 @@ class RecieverCard extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
-          color: Colors.indigo,
+          color: type == TransactionEnum.credit ? Colors.indigo : Colors.amber,
           margin: const EdgeInsets.symmetric(
             horizontal: 15,
             vertical: 5,
@@ -47,32 +47,42 @@ class RecieverCard extends StatelessWidget {
                   type == TransactionEnum.credit
                       ? "Credit added"
                       : "Paid Back!",
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                  ),
+                  style: type == TransactionEnum.credit
+                      ? const TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                        )
+                      : const TextStyle(
+                          color: Colors.indigo,
+                          fontSize: 14,
+                        ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 15.0),
                   child: Text(
                     '₹${amount >= 0 ? amount.ceil().toString() : (-amount.ceil()).toString()}',
-                    style: const TextStyle(
-                      color: Colors.amber,
+                    style: TextStyle(
+                      color: type == TransactionEnum.credit
+                          ? Colors.amber
+                          : Colors.indigo,
                       fontWeight: FontWeight.w600,
                       fontSize: 30,
                     ),
                   ),
                 ),
-                Text(
-                  description,
-                  style: const TextStyle(color: Colors.white, fontSize: 16),
-                ),
+                if (type == TransactionEnum.credit)
+                  Text(
+                    description,
+                    style: const TextStyle(color: Colors.white, fontSize: 16),
+                  ),
                 Align(
                   alignment: Alignment.centerRight,
                   child: Text(
                     DateFormat.yMd().format(timestamp),
-                    style: const TextStyle(
-                      color: Colors.white54,
+                    style: TextStyle(
+                      color: type == TransactionEnum.credit
+                          ? Colors.white54
+                          : Colors.indigo,
                     ),
                   ),
                 )

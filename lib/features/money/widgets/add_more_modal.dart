@@ -67,10 +67,7 @@ class _AddMoreModalState extends ConsumerState<AddMoreModal> {
             alignment: Alignment.centerLeft,
             child: Text(
               "Add More Debt to ${widget.name}",
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold
-              ),
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
           TextField(
