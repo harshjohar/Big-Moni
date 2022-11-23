@@ -150,6 +150,47 @@ class MoneyRepository {
     }
   }
 
+  Future<void> payBackTransaction({
+    required BuildContext context,
+    required String userId,
+    required String userName,
+    required String photoUrl,
+    required double amount,
+    required UserModel sender,
+  }) async {
+    try {
+      DateTime timestamp = DateTime.now();
+      // UserModel reciever;
+      // var userDataMap = await firestore.collection('users').doc(userId).get();
+      // reciever = UserModel.fromJson(userDataMap.data()!);
+      _saveToInteractionSubCollection(
+        name: userName,
+        photoUrl: photoUrl,
+        timestamp: timestamp,
+        userId: userId,
+        description: "Paid Back!",
+        amount: -amount,
+        sender: sender,
+      );
+
+      var transactionId = const Uuid().v1();
+
+      _saveToTransactionSubCollection(
+        userId: userId,
+        description: "Paid Back!",
+        amount: -amount,
+        type: TransactionEnum.debit,
+        transactionId: transactionId,
+      );
+      showSnackBar(context: context, content: "Added");
+    } catch (e) {
+      showSnackBar(
+        context: context,
+        content: e.toString(),
+      );
+    }
+  }
+
   Stream<List<Interaction>> getInteractions() {
     return firestore
         .collection('users')
