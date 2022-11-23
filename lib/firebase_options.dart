@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -28,10 +25,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -49,6 +43,16 @@ class DefaultFirebaseOptions {
     }
   }
 
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyAaZNP3pRsAhl1gnYBsFZo70udcRCQDRpc',
+    appId: '1:475746859979:web:6f684506bb36bfa5db544e',
+    messagingSenderId: '475746859979',
+    projectId: 'big-moni',
+    authDomain: 'big-moni.firebaseapp.com',
+    storageBucket: 'big-moni.appspot.com',
+    measurementId: 'G-WJK1EHNQCX',
+  );
+
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyB_FS_SZkro0_yK9sGwsxz0zjRyNlY1FdI',
     appId: '1:475746859979:android:1ec2e1405b2eb882db544e',
@@ -63,10 +67,19 @@ class DefaultFirebaseOptions {
     messagingSenderId: '475746859979',
     projectId: 'big-moni',
     storageBucket: 'big-moni.appspot.com',
-    androidClientId:
-        '475746859979-g4dk0tpgc4vq06c86sm9jqbqs2h22qnj.apps.googleusercontent.com',
-    iosClientId:
-        '475746859979-ao7j7lr083pfefsconho2m7fuhn79916.apps.googleusercontent.com',
+    androidClientId: '475746859979-g4dk0tpgc4vq06c86sm9jqbqs2h22qnj.apps.googleusercontent.com',
+    iosClientId: '475746859979-ao7j7lr083pfefsconho2m7fuhn79916.apps.googleusercontent.com',
+    iosBundleId: 'com.example.bigbucks',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyCLeNIdpJIqGYW6UZMDOEpQ10YOZ6NQvGA',
+    appId: '1:475746859979:ios:864636cdaee57931db544e',
+    messagingSenderId: '475746859979',
+    projectId: 'big-moni',
+    storageBucket: 'big-moni.appspot.com',
+    androidClientId: '475746859979-g4dk0tpgc4vq06c86sm9jqbqs2h22qnj.apps.googleusercontent.com',
+    iosClientId: '475746859979-ao7j7lr083pfefsconho2m7fuhn79916.apps.googleusercontent.com',
     iosBundleId: 'com.example.bigbucks',
   );
 }
