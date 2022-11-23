@@ -59,9 +59,15 @@ class _AddMoreModalState extends ConsumerState<AddMoreModal> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.fromLTRB(
+        20,
+        20,
+        20,
+        MediaQuery.of(context).viewInsets.bottom + 10,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Align(
             alignment: Alignment.centerLeft,
@@ -72,12 +78,18 @@ class _AddMoreModalState extends ConsumerState<AddMoreModal> {
           ),
           TextField(
             controller: descriptionController,
+            autofocus: true,
+            textInputAction: TextInputAction.next,
             decoration: const InputDecoration(
               hintText: "Description",
             ),
           ),
           TextField(
             controller: amountController,
+            keyboardType: const TextInputType.numberWithOptions(
+              decimal: false,
+            ),
+            onSubmitted: (_) => _addTransaction(),
             decoration: const InputDecoration(
               hintText: "Amount",
             ),
