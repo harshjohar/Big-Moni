@@ -63,4 +63,8 @@ class MoneyController {
   Stream<List<TransactionModel>> getTransactions(String userId) {
     return moneyRepository.getTransactions(userId);
   }
+
+  Stream<Interaction> getInteraction(String userId) {
+    return moneyRepository.getInteraction(userId);
+  }
 }

@@ -211,6 +211,19 @@ class MoneyRepository {
     });
   }
 
+  Stream<Interaction> getInteraction(String userId) {
+    return firestore
+        .collection('users')
+        .doc(auth.currentUser!.uid)
+        .collection('interactions')
+        .doc(userId)
+        .snapshots()
+        .asyncMap((event) {
+        Interaction interaction = Interaction.fromJson(event.data()!);
+      return interaction;
+    });
+  }
+
   Stream<List<TransactionModel>> getTransactions(String userId) {
     return firestore
         .collection('users')

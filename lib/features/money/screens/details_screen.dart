@@ -1,6 +1,8 @@
+import 'package:bigbucks/features/money/controller/money_controller.dart';
 import 'package:bigbucks/features/money/widgets/add_more_modal.dart';
 import 'package:bigbucks/features/money/widgets/paid_back_modal.dart';
 import 'package:bigbucks/features/money/widgets/transactions_list.dart';
+import 'package:bigbucks/models/interaction.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,7 +24,60 @@ class DetailsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(name),
+        centerTitle: false,
+        title: Row(
+          children: [
+            CircleAvatar(
+              backgroundColor: Colors.amber,
+              backgroundImage: NetworkImage(
+                photoUrl.isNotEmpty
+                    ? photoUrl
+                    : "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png",
+              ),
+              radius: 20,
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Text(name),
+          ],
+        ),
+        actions: [
+          StreamBuilder<Interaction>(
+              stream: ref.read(moneyControllerProvider).getInteraction(userId),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Align(
+                    alignment: Alignment.center,
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                final balance = snapshot.data!.balance;
+                return Align(
+                    alignment: Alignment.center,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: balance >= 0
+                          ? Text(
+                              balance.ceil().toString(),
+                              style: TextStyle(
+                                color:
+                                    balance > 0 ? Colors.green : Colors.indigo,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                              ),
+                            )
+                          : Text(
+                              (-balance).ceil().toString(),
+                              style: const TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                              ),
+                            ),
+                    ));
+              }),
+        ],
       ),
       body: SafeArea(
         child: Column(

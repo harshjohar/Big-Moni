@@ -59,7 +59,7 @@ class _PaidBackModalState extends ConsumerState<PaidBackModal> {
           Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              "Add More Debt to ${widget.name}",
+              "Pay Back by ${widget.name}",
               style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold
