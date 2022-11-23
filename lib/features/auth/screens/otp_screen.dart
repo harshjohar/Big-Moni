@@ -1,4 +1,3 @@
-import 'package:bigbucks/colors.dart';
 import 'package:bigbucks/features/auth/controllers/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -28,7 +27,6 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
       appBar: AppBar(
         title: const Text('Verifying your number'),
         elevation: 0,
-        backgroundColor: CustomColors.blackColor,
       ),
       body: Center(
         child: Column(

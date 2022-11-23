@@ -37,11 +37,34 @@ class MoneyController {
     });
   }
 
+  void payBackTransaction({
+    required BuildContext context,
+    required String userId,
+    required String userName,
+    required String photoUrl,
+    required double amount,
+  }) {
+    ref.read(userProvider).whenData((user) {
+      moneyRepository.payBackTransaction(
+        context: context,
+        userId: userId,
+        userName: userName,
+        photoUrl: photoUrl,
+        amount: amount,
+        sender: user!,
+      );
+    });
+  }
+
   Stream<List<Interaction>> getInteractions() {
     return moneyRepository.getInteractions();
   }
 
   Stream<List<TransactionModel>> getTransactions(String userId) {
     return moneyRepository.getTransactions(userId);
+  }
+
+  Stream<Interaction> getInteraction(String userId) {
+    return moneyRepository.getInteraction(userId);
   }
 }

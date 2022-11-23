@@ -37,6 +37,7 @@ class InteractionsList extends ConsumerWidget {
                             'userId': interactionData.userId,
                             'name': interactionData.name,
                             'photoUrl': interactionData.photoUrl,
+                            'balance': interactionData.balance,
                           },
                         );
                       },
