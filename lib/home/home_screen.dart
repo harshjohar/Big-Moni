@@ -1,5 +1,5 @@
-import 'package:bigbucks/features/money/controller/money_controller.dart';
 import 'package:bigbucks/features/money/widgets/interactions_list.dart';
+import 'package:bigbucks/features/select_contacts/screens/select_contact_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -15,14 +15,7 @@ class HomeScreen extends ConsumerWidget {
       body: const InteractionsList(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          ref.read(moneyControllerProvider).addTransaction(
-                context: context,
-                userId: 'Bywndnvy5AUHa3nS4dWnjbG9SnP2',
-                userName: 'NNK',
-                photoUrl: '',
-                amount: -1500,
-                description: 'chicken',
-              );
+          Navigator.of(context).pushNamed(SelectContactScreen.routeName);
         },
         child: const Icon(
           Icons.add,

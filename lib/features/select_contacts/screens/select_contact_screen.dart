@@ -10,7 +10,9 @@ class SelectContactScreen extends ConsumerWidget {
 
   void selectContact(
       WidgetRef ref, Contact selectedContact, BuildContext context) {
-    // TODO
+    ref
+        .read(selectContactControllerProvider)
+        .selectContact(selectedContact, context);
   }
 
   @override
@@ -37,7 +39,10 @@ class SelectContactScreen extends ConsumerWidget {
                         title: Text(contact.displayName),
                         leading: contact.photo == null
                             ? const CircleAvatar(
-                                backgroundColor: Colors.pink,
+                                backgroundColor: Colors.indigo,
+                                backgroundImage: NetworkImage(
+                                  "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png",
+                                ),
                                 radius: 30,
                               )
                             : CircleAvatar(
