@@ -56,8 +56,8 @@ class RecieverCard extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 15.0),
                   child: Text(
                     '₹${amount >= 0 ? amount.ceil().toString() : (-amount.ceil()).toString()}',
-                    style: TextStyle(
-                      color: amount < 0 ? Colors.amber : Colors.indigo,
+                    style: const TextStyle(
+                      color: Colors.amber,
                       fontWeight: FontWeight.w600,
                       fontSize: 30,
                     ),

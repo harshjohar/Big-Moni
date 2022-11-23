@@ -17,11 +17,11 @@ class HomeScreen extends ConsumerWidget {
         onPressed: () {
           ref.read(moneyControllerProvider).addTransaction(
                 context: context,
-                userId: 'L6Jw4G8bBBW0CrifhHf98iwuByf1',
-                userName: 'Manjit',
+                userId: 'Bywndnvy5AUHa3nS4dWnjbG9SnP2',
+                userName: 'NNK',
                 photoUrl: '',
                 amount: -1500,
-                description: 'peg',
+                description: 'chicken',
               );
         },
         child: const Icon(
