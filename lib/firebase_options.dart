@@ -63,8 +63,10 @@ class DefaultFirebaseOptions {
     messagingSenderId: '475746859979',
     projectId: 'big-moni',
     storageBucket: 'big-moni.appspot.com',
-    androidClientId: '475746859979-g4dk0tpgc4vq06c86sm9jqbqs2h22qnj.apps.googleusercontent.com',
-    iosClientId: '475746859979-ao7j7lr083pfefsconho2m7fuhn79916.apps.googleusercontent.com',
+    androidClientId:
+        '475746859979-g4dk0tpgc4vq06c86sm9jqbqs2h22qnj.apps.googleusercontent.com',
+    iosClientId:
+        '475746859979-ao7j7lr083pfefsconho2m7fuhn79916.apps.googleusercontent.com',
     iosBundleId: 'com.example.bigbucks',
   );
 }

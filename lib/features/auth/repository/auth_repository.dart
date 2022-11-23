@@ -3,125 +3,105 @@ import 'dart:io';
 import 'package:bigbucks/common/repository/common_firebase_storage_repository.dart';
 import 'package:bigbucks/common/utils/utils.dart';
 import 'package:bigbucks/features/auth/screens/otp_screen.dart';
-import 'package:bigbucks/features/auth/screens/user_information.dart';
-import 'package:bigbucks/features/home/screens/home_screen.dart';
-import 'package:bigbucks/models/person.dart';
+import 'package:bigbucks/features/auth/screens/user_information_screen.dart';
+import 'package:bigbucks/home/home_screen.dart';
+import 'package:bigbucks/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final authRepositoryProvider = Provider(
-  (ref) => AuthRepository(
-      auth: FirebaseAuth.instance, firestore: FirebaseFirestore.instance),
+  (ref) => AuthRepository(FirebaseAuth.instance, FirebaseFirestore.instance),
 );
 
 class AuthRepository {
   final FirebaseAuth auth;
   final FirebaseFirestore firestore;
 
-  AuthRepository({
-    required this.auth,
-    required this.firestore,
-  });
+  AuthRepository(this.auth, this.firestore);
 
-  Future<Person?> getCurrentUserData() async {
-    var personData =
-        await firestore.collection("users").doc(auth.currentUser?.uid).get();
-    Person? person;
-    if (personData.data() != null) {
-      person = Person.fromMap(personData.data()!);
+  Future<UserModel?> getUserData() async {
+    var userData =
+        await firestore.collection('users').doc(auth.currentUser?.uid).get();
+    UserModel? user;
+    if (userData.data() != null) {
+      user = UserModel.fromJson(userData.data()!);
     }
-    return person;
+    return user;
   }
 
   void signInWithPhone(BuildContext context, String phoneNumber) async {
     try {
       await auth.verifyPhoneNumber(
-        phoneNumber: phoneNumber,
-        verificationCompleted: (PhoneAuthCredential credential) async {
-          if (!Platform.isAndroid) {
-            await auth.signInWithCredential(credential);
-          }
-        },
-        verificationFailed: (e) {
-          throw Exception(e.message);
-        },
-        codeSent: ((verificationId, forceResendingToken) async {
-          Navigator.of(context).pushNamed(
-            OTPScreen.routeName,
-            arguments: verificationId,
-          );
-        }),
-        codeAutoRetrievalTimeout: (String verificationId) {},
-      );
+          phoneNumber: phoneNumber,
+          verificationCompleted: (PhoneAuthCredential credential) async {
+            if (!Platform.isAndroid) {
+              await auth.signInWithCredential(credential);
+            }
+          },
+          verificationFailed: (FirebaseAuthException exception) {
+            throw Exception(exception.message);
+          },
+          codeSent: (String verificationId, int? resendToken) {
+            Navigator.pushNamed(context, OTPScreen.routeName,
+                arguments: verificationId);
+          },
+          codeAutoRetrievalTimeout: (String s) {});
     } on FirebaseAuthException catch (e) {
       showSnackBar(context: context, content: e.message!);
-    }
-  }
-
-  void verifyOTP({
-    required BuildContext context,
-    required String verificationId,
-    required String userOTP,
-  }) async {
-    try {
-      PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.credential(
-        verificationId: verificationId,
-        smsCode: userOTP,
-      );
-
-      await auth.signInWithCredential(phoneAuthCredential);
-
-      // ignore: use_build_context_synchronously
-      Navigator.of(context).pushNamedAndRemoveUntil(
-        UserInformation.routeName,
-        (route) => false,
-      );
     } catch (e) {
       showSnackBar(context: context, content: e.toString());
     }
   }
 
-  Future<void> saveDataToFirebase({
-    required String name,
-    required String email,
-    required String upiID,
-    required File? profilePic,
-    required ProviderRef ref,
-    required BuildContext context,
-  }) async {
+  void verifyOTP(
+      BuildContext context, String verificationId, String userOTP) async {
+    try {
+      PhoneAuthCredential credential = PhoneAuthProvider.credential(
+          verificationId: verificationId, smsCode: userOTP);
+      await auth.signInWithCredential(credential);
+      // ignore: use_build_context_synchronously
+      Navigator.pushNamedAndRemoveUntil(
+          context, UserInformationScreen.routeName, (route) => false);
+    } on FirebaseAuthException catch (e) {
+      showSnackBar(context: context, content: e.message!);
+    } catch (e) {
+      showSnackBar(context: context, content: e.toString());
+    }
+  }
+
+  void saveUserData(
+      {required BuildContext context,
+      required String name,
+      required File? profilePic,
+      String? email,
+      String? upiID,
+      required ProviderRef ref}) async {
     try {
       String uid = auth.currentUser!.uid;
-      String photoUrl =
-          'https://png.pngitem.com/pimgs/s/649-6490124_katie-notopoulos-katienotopoulos-i-write-about-tech-round.png';
+      String photoUrl = '';
 
       if (profilePic != null) {
         photoUrl = await ref
             .read(commonFirebaseStorageRepositoryProvider)
-            .storeFileToFirebase(
-              'profilePic/$uid',
-              profilePic,
-            );
+            .storeFileToFirebase('profilePic/$uid', profilePic);
       }
 
-      var person = Person(
+      UserModel user = UserModel(
         name: name,
         phoneNumber: auth.currentUser!.phoneNumber!,
+        photoUrl: profilePic != null ? photoUrl : null,
         email: email,
         upiID: upiID,
-        photoUrl: photoUrl,
       );
 
-      await firestore.collection("users").doc(uid).set(person.toMap());
-
-      // ignore: use_build_context_synchronously
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (ctx) {
-          return const HomeScreen();
-        }),
-        (route) => false,
-      );
+      await firestore.collection('users').doc(uid).set(user.toJson());
+// ignore: use_build_context_synchronously
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
+          (route) => false);
     } catch (e) {
       showSnackBar(context: context, content: e.toString());
     }

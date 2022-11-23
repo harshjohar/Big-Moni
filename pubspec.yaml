@@ -12,21 +12,23 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.2
-  firebase_core: ^1.21.1
-  flutter_riverpod: ^1.0.4
-  firebase_auth: ^3.7.0
-  cloud_firestore: ^3.4.6
-  firebase_storage: ^10.3.7
-  contacts_service: ^0.6.3
+  firebase_core: ^2.3.0
+  flutter_riverpod: ^2.1.1
+  firebase_auth: ^4.1.3
+  cloud_firestore: ^4.1.0
+  firebase_storage: ^11.0.6
+  flutter_contacts: ^1.1.5+1
   permission_handler: ^10.0.0
   image_picker: ^0.8.5+3
   enough_giphy_flutter: ^0.3.0
   intl: ^0.17.0
+  country_picker: ^2.0.16
+  uuid: ^3.0.7
   
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: "^0.10.0"
+  flutter_launcher_icons: ^0.11.0
 
   flutter_lints: ^2.0.0
 

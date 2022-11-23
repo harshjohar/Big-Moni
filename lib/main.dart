@@ -1,9 +1,9 @@
 import 'package:bigbucks/common/screens/error_screen.dart';
 import 'package:bigbucks/common/screens/loader.dart';
-import 'package:bigbucks/features/auth/provider/auth_controller.dart';
-import 'package:bigbucks/features/home/screens/home_screen.dart';
-import 'package:bigbucks/features/landing/landing_screen.dart';
+import 'package:bigbucks/features/auth/controllers/auth_controller.dart';
+import 'package:bigbucks/features/auth/screens/login_screen.dart';
 import 'package:bigbucks/firebase_options.dart';
+import 'package:bigbucks/home/home_screen.dart';
 import 'package:bigbucks/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -16,19 +16,19 @@ void main() async {
   );
   runApp(
     const ProviderScope(
-      child: MyApp(),
+      child: BigBucks(),
     ),
   );
 }
 
-class MyApp extends ConsumerStatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+class BigBucks extends ConsumerStatefulWidget {
+  const BigBucks({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<MyApp> createState() => _MyAppState();
+  ConsumerState<BigBucks> createState() => _BigBucksState();
 }
 
-class _MyAppState extends ConsumerState<MyApp> {
+class _BigBucksState extends ConsumerState<BigBucks> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -42,8 +42,8 @@ class _MyAppState extends ConsumerState<MyApp> {
           secondary: Colors.amber,
         ),
       ),
-      home: ref.watch(userdataAuthProvider).when(data: (user) {
-        if (user == null) return const LandingScreen();
+      home: ref.watch(userProvider).when(data: (user) {
+        if (user == null) return const LoginScreen();
         return const HomeScreen();
       }, error: (error, trace) {
         return ErrorScreen(

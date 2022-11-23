@@ -2,37 +2,39 @@ import 'dart:io';
 
 import 'package:bigbucks/colors.dart';
 import 'package:bigbucks/common/utils/utils.dart';
-import 'package:bigbucks/features/auth/provider/auth_controller.dart';
-import 'package:bigbucks/models/person.dart';
+import 'package:bigbucks/features/auth/controllers/auth_controller.dart';
+import 'package:bigbucks/models/user_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class UserInformation extends ConsumerStatefulWidget {
+class UserInformationScreen extends ConsumerStatefulWidget {
   static const String routeName = '/user-information';
-  const UserInformation({Key? key}) : super(key: key);
+
+  const UserInformationScreen({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<UserInformation> createState() => _UserInformationState();
+  ConsumerState<UserInformationScreen> createState() => _UserInformationState();
 }
 
-class _UserInformationState extends ConsumerState<UserInformation> {
+class _UserInformationState extends ConsumerState<UserInformationScreen> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController upiController = TextEditingController();
   File? image;
 
   bool isLoading = false;
-  Person? person;
+  UserModel? userModel;
+
   void getPerson() async {
-    Person? p = await ref.read(authControllerProvider).getUserData();
+    UserModel? p = await ref.read(authControllerProvider).getUserData();
     setState(() {
-      person = p;
+      userModel = p;
     });
-    if (person != null) {
-      emailController.text = person!.email!;
-      nameController.text = person!.name;
-      upiController.text = person!.upiID!;
+    if (userModel != null) {
+      emailController.text = userModel!.email!;
+      nameController.text = userModel!.name;
+      upiController.text = userModel!.upiID!;
     }
   }
 
@@ -65,12 +67,12 @@ class _UserInformationState extends ConsumerState<UserInformation> {
     });
 
     if (name.isNotEmpty && email.isNotEmpty) {
-      await ref.read(authControllerProvider).sendDataToFirebase(
+      ref.read(authControllerProvider).saveUserData(
             context,
             name,
+            image,
             email,
             upiID,
-            image,
           );
     }
     setState(() {

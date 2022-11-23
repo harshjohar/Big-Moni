@@ -1,37 +1,43 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:bigbucks/enums/transaction_enum.dart';
 
 class TransactionModel {
-  final String debtorId;
-  final String creditorId;
-  final double money;
+  final String senderId;
+  final String recieverId;
+  final double amount;
   final String description;
-  final Timestamp timestamp;
+  final TransactionEnum transactionType;
+  final DateTime timestamp;
 
   TransactionModel({
-    required this.debtorId,
-    required this.creditorId,
+    required this.senderId,
+    required this.recieverId,
+    required this.amount,
     required this.description,
-    required this.money,
+    required this.transactionType,
     required this.timestamp,
   });
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return {
-      'debtorId': debtorId,
-      'creditorId': creditorId,
-      'description': description,
-      'money': money,
-      'timestamp': timestamp,
+      "senderId": senderId,
+      "recieverId": recieverId,
+      "amount": amount,
+      "description": description,
+      "transactionType": transactionType.type,
+      "timestamp": timestamp.toIso8601String(),
     };
   }
 
-  factory TransactionModel.fromMap(Map<String, dynamic> map) {
+  factory TransactionModel.fromJson(Map<String, dynamic> json) {
     return TransactionModel(
-      debtorId: map['debtorId'],
-      creditorId: map['creditorId'],
-      description: map['description'],
-      money: map['money'],
-      timestamp: map['timestamp'],
+      senderId: json["senderId"] ?? '',
+      recieverId: json["recieverId"] ?? '',
+      amount: json["amount"],
+      description: json["description"] ?? '',
+      transactionType: (json["transactionType"] as String).toEnum(),
+      timestamp: DateTime.parse(json["timestamp"]),
     );
   }
+//
+
 }
