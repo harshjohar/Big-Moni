@@ -3,10 +3,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SelectContactScreen extends ConsumerWidget {
+class SelectContactScreen extends ConsumerStatefulWidget {
   static const String routeName = '/select-contacts';
 
   const SelectContactScreen({Key? key}) : super(key: key);
+
+  @override
+  ConsumerState<SelectContactScreen> createState() =>
+      _SelectContactScreenState();
+}
+
+class _SelectContactScreenState extends ConsumerState<SelectContactScreen> {
+  final TextEditingController _contactController = TextEditingController();
+
+  @override
+  void dispose() {
+    _contactController.dispose();
+    super.dispose();
+  }
 
   void selectContact(
       WidgetRef ref, Contact selectedContact, BuildContext context) {
@@ -16,10 +30,26 @@ class SelectContactScreen extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Select Contacts"),
+        title: ClipRRect(
+          borderRadius: BorderRadius.circular(9999),
+          child: Container(
+            color: Colors.white,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 10,
+              vertical: 0,
+            ),
+            child: TextField(
+              controller: _contactController,
+              decoration: const InputDecoration(
+                hintText: "Select Contacts",
+                fillColor: Colors.white,
+              ),
+            ),
+          ),
+        ),
         actions: [
           IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
           IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert)),
