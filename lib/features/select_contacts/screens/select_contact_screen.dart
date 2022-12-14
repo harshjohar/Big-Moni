@@ -15,6 +15,16 @@ class SelectContactScreen extends ConsumerStatefulWidget {
 
 class _SelectContactScreenState extends ConsumerState<SelectContactScreen> {
   final TextEditingController _contactController = TextEditingController();
+  List<Contact> contacts = [];
+  List<Contact> filteredContacts = [];
+
+  @override
+  void initState() {
+    _contactController.addListener(() {
+      filterContacts();
+    });
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -29,10 +39,27 @@ class _SelectContactScreenState extends ConsumerState<SelectContactScreen> {
         .selectContact(selectedContact, context);
   }
 
+  void filterContacts() {
+    List<Contact> l = [];
+    l.addAll(contacts);
+    if (_contactController.text.isNotEmpty) {
+      l.retainWhere((ctc) {
+        String search = _contactController.text.toLowerCase();
+        String contactName = ctc.displayName.toLowerCase();
+        return contactName.contains(search);
+      });
+    }
+    setState(() {
+      filteredContacts = l;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    bool isSearching = _contactController.text.isNotEmpty;
     return Scaffold(
       appBar: AppBar(
+        centerTitle: false,
         title: ClipRRect(
           borderRadius: BorderRadius.circular(9999),
           child: Container(
@@ -51,54 +78,58 @@ class _SelectContactScreenState extends ConsumerState<SelectContactScreen> {
           ),
         ),
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
           IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert)),
         ],
       ),
-      body: ref.watch(getContactsProvider).when(
-          data: (contactList) => ListView.builder(
-                itemBuilder: (context, index) {
-                  final contact = contactList[index];
-                  return InkWell(
-                    onTap: () {
-                      selectContact(ref, contact, context);
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: ListTile(
-                        title: Text(contact.displayName),
-                        leading: contact.photo == null
-                            ? const CircleAvatar(
-                                backgroundColor: Colors.indigo,
-                                backgroundImage: NetworkImage(
-                                  "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png",
-                                ),
-                                radius: 30,
-                              )
-                            : CircleAvatar(
-                                backgroundImage: MemoryImage(contact.photo!),
-                                radius: 30,
-                              ),
-                      ),
-                    ),
-                  );
-                },
-                itemCount: contactList.length,
-              ),
-          error: (error, trace) {
-            return Scaffold(
-              body: Center(
-                child: Text(error.toString()),
+      body: ref.watch(getContactsProvider).when(data: (contactList) {
+        setState(() {
+          if (contacts.isEmpty) {
+            contacts.addAll(contactList);
+          }
+        });
+        return ListView.builder(
+          itemCount: isSearching ? filteredContacts.length : contacts.length,
+          itemBuilder: (context, index) {
+            final contact =
+                isSearching ? filteredContacts[index] : contacts[index];
+            return InkWell(
+              onTap: () {
+                selectContact(ref, contact, context);
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: ListTile(
+                  title: Text(contact.displayName),
+                  leading: contact.photo == null
+                      ? const CircleAvatar(
+                          backgroundColor: Colors.indigo,
+                          backgroundImage: NetworkImage(
+                            "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png",
+                          ),
+                          radius: 30,
+                        )
+                      : CircleAvatar(
+                          backgroundImage: MemoryImage(contact.photo!),
+                          radius: 30,
+                        ),
+                ),
               ),
             );
           },
-          loading: () {
-            return const Scaffold(
-              body: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
-          }),
+        );
+      }, error: (error, trace) {
+        return Scaffold(
+          body: Center(
+            child: Text(error.toString()),
+          ),
+        );
+      }, loading: () {
+        return const Scaffold(
+          body: Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+      }),
     );
   }
 }
