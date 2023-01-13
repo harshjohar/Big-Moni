@@ -26,13 +26,16 @@ class _LandingScreenState extends State<LandingScreen> {
             ),
           ),
           Image.asset("assets/images/bigmoni.png"),
-          TextButton(
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color(0xffECE6DB),
+            ),
               onPressed: () {
                 Navigator.pushNamed(context, LoginScreen.routeName);
               },
               child: const Text(
-                "Get started!",
-                style: TextStyle(fontSize: 18, color: Color(0xffECE6DB)),
+                "Get started !",
+                style: TextStyle(fontSize: 18, color: Color(0xff272727)),
               )),
         ],
       ),
