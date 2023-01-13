@@ -119,9 +119,6 @@ class MoneyRepository {
   }) async {
     try {
       DateTime timestamp = DateTime.now();
-      // UserModel reciever;
-      // var userDataMap = await firestore.collection('users').doc(userId).get();
-      // reciever = UserModel.fromJson(userDataMap.data()!);
       _saveToInteractionSubCollection(
         name: userName,
         photoUrl: photoUrl,
@@ -160,9 +157,6 @@ class MoneyRepository {
   }) async {
     try {
       DateTime timestamp = DateTime.now();
-      // UserModel reciever;
-      // var userDataMap = await firestore.collection('users').doc(userId).get();
-      // reciever = UserModel.fromJson(userDataMap.data()!);
       _saveToInteractionSubCollection(
         name: userName,
         photoUrl: photoUrl,

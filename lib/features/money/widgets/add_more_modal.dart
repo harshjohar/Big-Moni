@@ -1,4 +1,3 @@
-import 'package:bigbucks/common/utils/utils.dart';
 import 'package:bigbucks/features/money/controller/money_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -37,19 +36,7 @@ class _AddMoreModalState extends ConsumerState<AddMoreModal> {
     if (!(isValid as bool)) {
       return;
     }
-    // if (amountController.text.trim().isEmpty) {
-    //   showSnackBar(context: context, content: "Amount cannot be empty.");
-    //   return;
-    // }
-    // if (descriptionController.text.trim().isEmpty) {
-    //   showSnackBar(context: context, content: "Description cannot be empty.");
-    //   return;
-    // }
 
-    // if (double.parse(amountController.text.trim()) < 0) {
-    //   showSnackBar(context: context, content: "Please enter a valid amount.");
-    //   return;
-    // }
     ref.read(moneyControllerProvider).addTransaction(
           context: context,
           userId: widget.userId,
@@ -100,6 +87,9 @@ class _AddMoreModalState extends ConsumerState<AddMoreModal> {
                   }
                   if (double.parse(value.trim()) <= 0) {
                     return "Please enter a valid amount";
+                  }
+                  if (double.parse(value.trim()) >= 10000) {
+                    return "Who are you dealing with? You dont need this app if you got this much money.";
                   }
                   return null;
                 }),
