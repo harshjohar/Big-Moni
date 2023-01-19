@@ -5,29 +5,6 @@ on:
         branches: [main]
 
 jobs:
-    # version:
-    #     name: Create version number
-    #     runs-on: ubuntu-latest
-    #     steps:
-    #         - name: Checkout
-    #           uses: actions/checkout@v2
-
-    #         - name: Install GitVersion
-    #           uses: gittools/actions/gitversion/setup@v0.9.7
-    #           with:
-    #               versionSpec: "5.x"
-
-    #         - name: Use GitVersion
-    #           id: gitversion
-    #           uses: gittools/actions/gitversion/execute@v0.9.7
-
-    #         - name: Create version.txt with nuGetVersion
-    #           run: echo ${{ steps.gitversion.outputs.nuGetVersion  }} > version.txt
-    #         - name: Upload version.txt
-    #           uses: actions/upload-artifact@v2
-    #           with:
-    #               name: gitversion
-    #               path: version.txt
     build:
         name: Build APK and Create release
         permissions:
@@ -51,10 +28,7 @@ jobs:
               uses: softprops/action-gh-release@v1
               if: startsWith(github.ref, 'refs/tags/')
               with:
-                files: |
-                  Release/app-arm64-v8a-release.apk
-                  Release/app-armeabi-v7a-release.apk
-                  Release/app-x86_64-release.apk
-
-
-
+                  files: |
+                      Release/app-arm64-v8a-release.apk
+                      Release/app-armeabi-v7a-release.apk
+                      Release/app-x86_64-release.apk
