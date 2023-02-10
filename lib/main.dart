@@ -44,7 +44,7 @@ class _BigBucksState extends ConsumerState<BigBucks> {
         ),
       ),
       home: ref.watch(userProvider).when(data: (user) {
-        if (user == null) return const UserInformationScreen();
+        if (user == null) return const LandingScreen();
         return const HomeScreen();
       }, error: (error, trace) {
         return ErrorScreen(
