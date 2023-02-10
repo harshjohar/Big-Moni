@@ -1,6 +1,7 @@
 import 'package:bigbucks/common/screens/error_screen.dart';
 import 'package:bigbucks/common/screens/loader.dart';
 import 'package:bigbucks/features/auth/controllers/auth_controller.dart';
+import 'package:bigbucks/features/auth/screens/user_information_screen.dart';
 import 'package:bigbucks/features/landing/landing_screen.dart';
 import 'package:bigbucks/firebase_options.dart';
 import 'package:bigbucks/home/home_screen.dart';
